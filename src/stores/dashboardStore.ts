@@ -1,31 +1,37 @@
 import { create } from 'zustand';
-import type { DashboardMetrics, DashboardAlert, PriceTrendSummary, KeyStatistics } from '../types/dashboard';
+import type { PriceOverview, PriceTrendSummary, FrameworkIndicators, PriceJudgment, DashboardAlert, KeyStatistics } from '../types/dashboard';
 import * as api from '../services/apiDashboard';
 
 interface DashboardState {
-  metrics: DashboardMetrics | null;
-  alerts: DashboardAlert[];
+  priceOverview: PriceOverview | null;
   trends: PriceTrendSummary[];
+  indicators: FrameworkIndicators | null;
+  judgment: PriceJudgment | null;
+  alerts: DashboardAlert[];
   keyStats: KeyStatistics | null;
   loading: boolean;
   fetchAll: () => Promise<void>;
 }
 
 export const useDashboardStore = create<DashboardState>((set) => ({
-  metrics: null,
-  alerts: [],
+  priceOverview: null,
   trends: [],
+  indicators: null,
+  judgment: null,
+  alerts: [],
   keyStats: null,
   loading: false,
 
   fetchAll: async () => {
     set({ loading: true });
-    const [metrics, alerts, trends, keyStats] = await Promise.all([
-      api.fetchDashboardMetrics(),
-      api.fetchDashboardAlerts(),
+    const [priceOverview, trends, indicators, alerts, keyStats] = await Promise.all([
+      api.fetchPriceOverview(),
       api.fetchPriceTrendSummaries(),
+      api.fetchFrameworkIndicators(),
+      api.fetchDashboardAlerts(),
       api.fetchKeyStatistics(),
     ]);
-    set({ metrics, alerts, trends, keyStats, loading: false });
+    const judgment = await api.fetchPriceJudgment(indicators);
+    set({ priceOverview, trends, indicators, judgment, alerts, keyStats, loading: false });
   },
 }));

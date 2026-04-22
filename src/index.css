@@ -5,30 +5,125 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #0a0e27;
+  color: #f0f0f0;
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* 滚动条美化 */
+/* 暗色滚动条 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Ant Design dark overrides */
+.ant-menu {
+  background: transparent !important;
+}
+
+.ant-menu-item {
+  color: #8892b0 !important;
+  border-radius: 8px !important;
+  margin: 2px 8px !important;
+}
+
+.ant-menu-item:hover {
+  color: #f0f0f0 !important;
+  background: rgba(79, 140, 255, 0.08) !important;
+}
+
+.ant-menu-item-selected {
+  color: #4f8cff !important;
+  background: rgba(79, 140, 255, 0.12) !important;
+}
+
+.ant-menu-item-selected::after {
+  display: none !important;
+}
+
+.ant-menu-item-group-title {
+  color: #4a5568 !important;
+  font-size: 10px !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 16px 16px 4px !important;
+}
+
+.ant-menu-item .anticon {
+  color: inherit !important;
+}
+
+.ant-tag {
+  border: none !important;
+}
+
+.ant-table {
+  background: transparent !important;
+  color: #d0d4e0 !important;
+}
+
+.ant-table-thead > tr > th {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #8892b0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  color: #d0d4e0 !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: rgba(79, 140, 255, 0.04) !important;
+}
+
+.ant-table-placeholder {
+  background: transparent !important;
+}
+
+.ant-timeline-item-content {
+  color: #d0d4e0 !important;
+}
+
+.ant-timeline-item-tail {
+  border-inline-start-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-slider-track {
+  background: linear-gradient(90deg, #4f8cff, #a855f7) !important;
+}
+
+.ant-slider-handle::after {
+  box-shadow: 0 0 8px rgba(79, 140, 255, 0.4) !important;
+}
+
+.ant-slider-rail {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.ant-slider-mark-text {
+  color: #8892b0 !important;
+  font-size: 11px !important;
 }

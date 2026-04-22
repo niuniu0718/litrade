@@ -12,6 +12,10 @@ import {
   GlobalOutlined,
   BulbOutlined,
   SettingOutlined,
+  ShoppingOutlined,
+  ContainerOutlined,
+  ExperimentOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
 const { Sider, Header, Content } = Layout;
 
@@ -20,6 +24,17 @@ type MenuItem = Required<MenuProps>['items'][number];
 const menuItems: MenuItem[] = [
   { key: '/dashboard', icon: <DashboardOutlined />, label: '工作台' },
   { type: 'divider' },
+  {
+    key: 'group-framework',
+    label: '分析框架',
+    type: 'group',
+    children: [
+      { key: '/demand', icon: <ShoppingOutlined />, label: '下游需求' },
+      { key: '/supply-demand', icon: <SwapOutlined />, label: '供给分析' },
+      { key: '/inventory', icon: <ContainerOutlined />, label: '库存分析' },
+      { key: '/macro', icon: <ExperimentOutlined />, label: '宏观因子' },
+    ],
+  },
   {
     key: 'group-market',
     label: '行情中心',
@@ -34,7 +49,6 @@ const menuItems: MenuItem[] = [
     label: '产业数据',
     type: 'group',
     children: [
-      { key: '/supply-demand', icon: <SwapOutlined />, label: '供需管理' },
       { key: '/company', icon: <TeamOutlined />, label: '企业分析' },
       { key: '/cost', icon: <FundOutlined />, label: '成本分析' },
       { key: '/trade', icon: <GlobalOutlined />, label: '进出口数据' },
@@ -46,6 +60,7 @@ const menuItems: MenuItem[] = [
     type: 'group',
     children: [
       { key: '/intelligence', icon: <BulbOutlined />, label: '市场情报' },
+      { key: '/scenario', icon: <ThunderboltOutlined />, label: '情境模拟' },
     ],
   },
   { type: 'divider' },
@@ -60,8 +75,9 @@ const menuItems: MenuItem[] = [
 ];
 
 const allKeys = [
-  '/dashboard', '/price', '/chart', '/supply-demand', '/company',
-  '/cost', '/trade', '/intelligence', '/settings',
+  '/dashboard', '/demand', '/supply-demand', '/inventory', '/macro',
+  '/price', '/chart', '/company', '/cost', '/trade',
+  '/intelligence', '/scenario', '/settings',
 ];
 
 const AppLayout: React.FC = () => {
@@ -76,12 +92,13 @@ const AppLayout: React.FC = () => {
   }, '/dashboard');
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: '100vh', background: '#0a0e27' }}>
       <Sider
         width={220}
         style={{
-          background: '#fff',
-          borderRight: '1px solid #f0f0f0',
+          background: 'rgba(255,255,255,0.02)',
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+          backdropFilter: 'blur(20px)',
         }}
       >
         <div
@@ -90,14 +107,33 @@ const AppLayout: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            gap: 10,
           }}
         >
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              background: 'linear-gradient(135deg, #4f8cff, #a855f7)',
+              borderRadius: 8,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 13,
+              fontWeight: 700,
+              color: '#fff',
+            }}
+          >
+            Li
+          </div>
           <span
             style={{
-              fontSize: 20,
+              fontSize: 16,
               fontWeight: 700,
-              color: '#0064ff',
+              background: 'linear-gradient(135deg, #4f8cff, #00d4ff)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
               letterSpacing: 1,
             }}
           >
@@ -109,41 +145,51 @@ const AppLayout: React.FC = () => {
           selectedKeys={[selectedKey]}
           items={menuItems}
           onClick={({ key }) => navigate(key)}
-          style={{ borderRight: 0, marginTop: 4 }}
+          style={{ borderRight: 0, marginTop: 4, background: 'transparent' }}
         />
       </Sider>
-      <Layout>
+      <Layout style={{ background: '#0a0e27' }}>
         <Header
           style={{
-            background: '#fff',
+            background: 'rgba(255,255,255,0.02)',
+            backdropFilter: 'blur(20px)',
             padding: '0 24px',
             height: 56,
             lineHeight: '56px',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ fontSize: 15, color: '#1a1a2e', fontWeight: 500 }}>
+          <span style={{ fontSize: 14, color: '#8892b0', fontWeight: 500 }}>
             锂行情交易管理系统
           </span>
-          <span style={{ fontSize: 13, color: '#6b7280' }}>
-            {new Date().toLocaleDateString('zh-CN', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 8, height: 8, borderRadius: '50%',
+              background: '#10b981',
+              boxShadow: '0 0 8px rgba(16,185,129,0.5)',
+            }} />
+            <span style={{ fontSize: 12, color: '#8892b0' }}>
+              {new Date().toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
+          </div>
         </Header>
         <Content
           style={{
-            margin: 20,
+            margin: 16,
             padding: 20,
-            background: '#f5f7fa',
-            borderRadius: 8,
+            background: 'rgba(255,255,255,0.02)',
+            borderRadius: 14,
+            border: '1px solid rgba(255,255,255,0.04)',
+            backdropFilter: 'blur(20px)',
             overflowY: 'auto',
-            minHeight: 'calc(100vh - 96px)',
+            minHeight: 'calc(100vh - 88px)',
           }}
         >
           <Outlet />
