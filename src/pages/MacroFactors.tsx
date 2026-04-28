@@ -7,15 +7,15 @@ import { CHART_TOOLTIP, CHART_AXIS_LABEL, CHART_SPLIT_LINE, CHART_LEGEND, COLORS
 import { CARD, CARD_BODY, SECTION, GAP, GLASS_HIGHLIGHT, TEXT } from '../utils/styles';
 
 const impactMap: Record<string, { label: string; color: string; bg: string }> = {
-  positive: { label: '利多', color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
-  negative: { label: '利空', color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
-  neutral: { label: '中性', color: '#4f8cff', bg: 'rgba(79,140,255,0.12)' },
+  positive: { label: '利多', color: '#FF4D4F', bg: 'rgba(255,77,79,0.12)' },
+  negative: { label: '利空', color: '#00C86E', bg: 'rgba(0,200,110,0.12)' },
+  neutral: { label: '中性', color: '#0064FF', bg: 'rgba(0,100,255,0.12)' },
 };
 
 const importanceMap: Record<string, { label: string; color: string }> = {
-  high: { label: '高', color: '#ef4444' },
-  medium: { label: '中', color: '#f59e0b' },
-  low: { label: '低', color: '#4f8cff' },
+  high: { label: '高', color: '#FF4D4F' },
+  medium: { label: '中', color: '#FAAD14' },
+  low: { label: '低', color: '#0064FF' },
 };
 
 const glassCard: React.CSSProperties = { ...CARD, borderRadius: 14 };
@@ -29,9 +29,9 @@ const SentimentTab: React.FC = () => {
   const flowOption = useMemo(() => ({
     tooltip: CHART_TOOLTIP,
     grid: { top: 20, right: 20, bottom: 30, left: 80 },
-    xAxis: { type: 'value', name: '亿元', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE },
-    yAxis: { type: 'category', data: capitalFlows.map((f) => f.sector), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { fontSize: 12, color: '#8892b0' } },
-    series: [{ type: 'bar', data: capitalFlows.map((f, i) => ({ value: f.netInflow, itemStyle: { color: f.netInflow >= 0 ? COLORS[i % COLORS.length] : '#ef4444' } })), barWidth: '50%' }],
+    xAxis: { type: 'value', name: '亿元', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE },
+    yAxis: { type: 'category', data: capitalFlows.map((f) => f.sector), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { fontSize: 12, color: '#8C8C8C' } },
+    series: [{ type: 'bar', data: capitalFlows.map((f, i) => ({ value: f.netInflow, itemStyle: { color: f.netInflow >= 0 ? COLORS[i % COLORS.length] : '#FF4D4F' } })), barWidth: '50%' }],
   }), [capitalFlows]);
 
   const macroColumns = [
@@ -48,7 +48,7 @@ const SentimentTab: React.FC = () => {
     {
       title: '趋势', dataIndex: 'trend', key: 'trend', width: 80,
       render: (v: string) => {
-        const map: Record<string, { color: string; label: string }> = { positive: { color: 'green', label: '利好' }, negative: { color: 'red', label: '利空' }, neutral: { color: 'default', label: '中性' } };
+        const map: Record<string, { color: string; label: string }> = { positive: { color: 'red', label: '利好' }, negative: { color: 'green', label: '利空' }, neutral: { color: 'default', label: '中性' } };
         const t = map[v] || { color: 'default', label: v };
         return <Tag color={t.color}>{t.label}</Tag>;
       },
@@ -79,14 +79,14 @@ const SentimentTab: React.FC = () => {
                 type="dashboard"
                 percent={sentiment.heatIndex}
                 size={140}
-                strokeColor={sentiment.heatIndex > 60 ? '#f5222d' : sentiment.heatIndex > 40 ? '#f59e0b' : '#52c41a'}
-                format={(p) => <div><div style={{ fontSize: 24, fontWeight: 700, color: TEXT.primary }}>{p}</div><div style={{ fontSize: 11, color: '#8892b0' }}>热度指数</div></div>}
+                strokeColor={sentiment.heatIndex > 60 ? '#FF4D4F' : sentiment.heatIndex > 40 ? '#FAAD14' : '#00C86E'}
+                format={(p) => <div><div style={{ fontSize: 24, fontWeight: 700, color: TEXT.primary }}>{p}</div><div style={{ fontSize: 11, color: '#8C8C8C' }}>热度指数</div></div>}
               />
             </div>
             <Row gutter={16}>
-              <Col span={8}><div style={{ textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 700, color: TEXT.primary }}>{sentiment.bullBearRatio}</div><div style={{ fontSize: 11, color: '#8892b0' }}>多空比</div></div></Col>
-              <Col span={8}><div style={{ textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 700, color: sentiment.sentimentScore >= 0 ? '#ef4444' : '#10b981' }}>{sentiment.sentimentScore}</div><div style={{ fontSize: 11, color: '#8892b0' }}>情绪分</div></div></Col>
-              <Col span={8}><div style={{ textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 700, color: TEXT.primary }}>{sentiment.newsCount24h}</div><div style={{ fontSize: 11, color: '#8892b0' }}>24h新闻</div></div></Col>
+              <Col span={8}><div style={{ textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 700, color: TEXT.primary }}>{sentiment.bullBearRatio}</div><div style={{ fontSize: 11, color: '#8C8C8C' }}>多空比</div></div></Col>
+              <Col span={8}><div style={{ textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 700, color: sentiment.sentimentScore >= 0 ? '#FF4D4F' : '#00C86E' }}>{sentiment.sentimentScore}</div><div style={{ fontSize: 11, color: '#8C8C8C' }}>情绪分</div></div></Col>
+              <Col span={8}><div style={{ textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 700, color: TEXT.primary }}>{sentiment.newsCount24h}</div><div style={{ fontSize: 11, color: '#8C8C8C' }}>24h新闻</div></div></Col>
             </Row>
             <div style={{ marginTop: 16, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {sentiment.hotWords.map((w) => <Tag key={w} style={{ margin: 0, borderRadius: 4 }}>{w}</Tag>)}
@@ -130,19 +130,19 @@ const MacroFactorsTab: React.FC = () => {
       indicator: radar.map((d) => ({ name: d.dimension, max: 100 })),
       shape: 'circle' as const,
       splitNumber: 4,
-      axisName: { color: '#8892b0', fontSize: 12 },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } },
-      splitArea: { areaStyle: { color: ['rgba(79,140,255,0.02)', 'rgba(79,140,255,0.04)', 'rgba(79,140,255,0.02)', 'rgba(79,140,255,0.04)'] } },
-      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+      axisName: { color: '#8C8C8C', fontSize: 12 },
+      splitLine: { lineStyle: { color: '#F0F0F0' } },
+      splitArea: { areaStyle: { color: ['rgba(0,100,255,0.02)', 'rgba(0,100,255,0.04)', 'rgba(0,100,255,0.02)', 'rgba(0,100,255,0.04)'] } },
+      axisLine: { lineStyle: { color: '#E8E8E8' } },
     },
     series: [{
       type: 'radar',
       data: [{
         value: radar.map((d) => d.score),
         name: '当前状态',
-        areaStyle: { color: 'rgba(79,140,255,0.15)' },
-        lineStyle: { color: '#4f8cff', width: 2, shadowColor: '#4f8cff', shadowBlur: 4 },
-        itemStyle: { color: '#4f8cff' },
+        areaStyle: { color: 'rgba(0,100,255,0.15)' },
+        lineStyle: { color: '#0064FF', width: 2 },
+        itemStyle: { color: '#0064FF' },
       }],
     }],
   }), [radar]);
@@ -151,14 +151,14 @@ const MacroFactorsTab: React.FC = () => {
     tooltip: CHART_TOOLTIP,
     legend: { ...CHART_LEGEND, data: ['碳酸锂价格', '美元指数'] },
     grid: { top: 40, right: 60, bottom: 30, left: 70 },
-    xAxis: { type: 'category', data: priceCorrelation.map((d) => d.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+    xAxis: { type: 'category', data: priceCorrelation.map((d) => d.month), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
     yAxis: [
-      { type: 'value', name: '价格(元/吨)', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      { type: 'value', name: '美元指数', position: 'right' as const, nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '价格(元/吨)', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '美元指数', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
     ],
     series: [
-      { name: '碳酸锂价格', type: 'line', data: priceCorrelation.map((d) => d.liPrice), smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#4f8cff', width: 2, shadowColor: '#4f8cff', shadowBlur: 4 }, itemStyle: { color: '#4f8cff' } },
-      { name: '美元指数', type: 'line', yAxisIndex: 1, data: priceCorrelation.map((d) => d.macroValue), smooth: true, symbol: 'diamond', symbolSize: 5, lineStyle: { color: '#ef4444', width: 2, shadowColor: '#ef4444', shadowBlur: 4 }, itemStyle: { color: '#ef4444' } },
+      { name: '碳酸锂价格', type: 'line', data: priceCorrelation.map((d) => d.liPrice), smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#0064FF', width: 2 }, itemStyle: { color: '#0064FF' } },
+      { name: '美元指数', type: 'line', yAxisIndex: 1, data: priceCorrelation.map((d) => d.macroValue), smooth: true, symbol: 'diamond', symbolSize: 5, lineStyle: { color: '#FF4D4F', width: 2 }, itemStyle: { color: '#FF4D4F' } },
     ],
   }), [priceCorrelation]);
 
@@ -183,7 +183,7 @@ const MacroFactorsTab: React.FC = () => {
               {indicators.map((ind) => {
                 const imp = impactMap[ind.impact] || impactMap.neutral;
                 return (
-                  <div key={ind.key} style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.02)' }}>
+                  <div key={ind.key} style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid #F0F0F0', background: '#FAFAFA' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                       <span style={{ fontSize: 12, color: TEXT.secondary }}>{ind.name}</span>
                       <Tag style={{ fontSize: 10, margin: 0, lineHeight: '16px', padding: '0 4px', background: imp.bg, color: imp.color }}>{imp.label}</Tag>
@@ -192,7 +192,7 @@ const MacroFactorsTab: React.FC = () => {
                       <span style={{ fontSize: 20, fontWeight: 700, color: TEXT.primary }}>{ind.value}</span>
                       <span style={{ fontSize: 11, color: TEXT.secondary }}>{ind.unit}</span>
                       {ind.change !== 0 && (
-                        <span style={{ fontSize: 11, fontWeight: 600, color: ind.change >= 0 ? '#ef4444' : '#10b981', marginLeft: 4 }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: ind.change >= 0 ? '#FF4D4F' : '#00C86E', marginLeft: 4 }}>
                           {ind.change >= 0 ? '+' : ''}{ind.change}
                         </span>
                       )}
@@ -233,8 +233,8 @@ const ResearchCalendarTab: React.FC = () => {
               <div style={{
                 padding: '16px 20px',
                 borderRadius: 10,
-                border: '1px solid rgba(255,255,255,0.06)',
-                background: 'rgba(255,255,255,0.02)',
+                border: '1px solid #E8E8E8',
+                background: '#FFFFFF',
                 height: '100%',
                 transition: 'border-color 0.2s',
               }}>

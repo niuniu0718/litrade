@@ -19,7 +19,7 @@ const ScoreTrendChart: React.FC<Props> = ({ data }) => {
           const point = data[params.dataIndex];
           if (!point) return '';
           const dirLabel = point.direction === 'bullish' ? '偏多' : point.direction === 'bearish' ? '偏空' : '中性';
-          const color = point.direction === 'bullish' ? '#10b981' : point.direction === 'bearish' ? '#ef4444' : '#f59e0b';
+          const color = point.direction === 'bullish' ? '#FF4D4F' : point.direction === 'bearish' ? '#00C86E' : '#FAAD14';
           return `<div style="font-size:12px">
             <div style="margin-bottom:4px">${point.date}</div>
             <div>评分：<b>${point.score}</b></div>
@@ -32,7 +32,7 @@ const ScoreTrendChart: React.FC<Props> = ({ data }) => {
       xAxis: {
         type: 'category',
         data: dates,
-        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+        axisLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } },
         axisTick: { show: false },
         axisLabel: { ...CHART_AXIS_LABEL, fontSize: 10, interval: Math.max(Math.floor(data.length / 6), 0) },
       },
@@ -51,19 +51,19 @@ const ScoreTrendChart: React.FC<Props> = ({ data }) => {
         smooth: true,
         symbol: 'circle',
         symbolSize: 3,
-        lineStyle: { color: '#4f8cff', width: 2, shadowColor: '#4f8cff', shadowBlur: 4 },
+        lineStyle: { color: '#0064FF', width: 2 },
         itemStyle: {
           color: (params: { value: number }) =>
-            params.value > 58 ? '#10b981' : params.value < 42 ? '#ef4444' : '#f59e0b',
+            params.value > 58 ? '#00C86E' : params.value < 42 ? '#FF4D4F' : '#FAAD14',
         },
-        areaStyle: gradientArea('#4f8cff', 0.1),
+        areaStyle: gradientArea('#0064FF', 0.1),
         markLine: {
           silent: true,
           symbol: 'none',
-          lineStyle: { color: 'rgba(255,255,255,0.1)', type: 'dashed' as const, width: 1 },
+          lineStyle: { color: 'rgba(0,0,0,0.1)', type: 'dashed' as const, width: 1 },
           data: [
-            { yAxis: 58, label: { formatter: '偏多线', fontSize: 9, color: '#10b981' } },
-            { yAxis: 42, label: { formatter: '偏空线', fontSize: 9, color: '#ef4444' } },
+            { yAxis: 58, label: { formatter: '偏多线', fontSize: 9, color: '#FF4D4F' } },
+            { yAxis: 42, label: { formatter: '偏空线', fontSize: 9, color: '#00C86E' } },
           ],
         },
       }],

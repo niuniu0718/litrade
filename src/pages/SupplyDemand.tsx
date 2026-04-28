@@ -12,11 +12,11 @@ const SupplyDemand: React.FC = () => {
   useEffect(() => { fetchAll(); }, []);
 
   const demandPieOption = useMemo(() => ({
-    tooltip: { trigger: 'item' as const, backgroundColor: 'rgba(255,255,255,0.96)', borderColor: '#e5e7eb', borderWidth: 1, textStyle: { color: '#1a1a2e', fontSize: 13 } },
+    tooltip: { trigger: 'item' as const, backgroundColor: 'rgba(255,255,255,0.96)', borderColor: '#E8E8E8', borderWidth: 1, textStyle: { color: '#1F1F1F', fontSize: 13 } },
     legend: { orient: 'vertical' as const, right: 10, top: 'center', textStyle: { fontSize: 12, color: '#8c8c8c' } },
     series: [{
       type: 'pie', radius: ['40%', '70%'], center: ['35%', '50%'], avoidLabelOverlap: false,
-      itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 }, label: { show: false },
+      itemStyle: { borderRadius: 6, borderColor: '#FFFFFF', borderWidth: 2 }, label: { show: false },
       data: demandSectors.map((d, i) => ({ value: d.share, name: d.sector, itemStyle: { color: COLORS[i % COLORS.length] } })),
     }],
   }), [demandSectors]);
@@ -24,9 +24,9 @@ const SupplyDemand: React.FC = () => {
   const demandBarOption = useMemo(() => ({
     tooltip: CHART_TOOLTIP,
     grid: { top: 20, right: 20, bottom: 30, left: 60 },
-    xAxis: { type: 'category', data: demandSectors.map((d) => d.sector), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 20 } },
-    yAxis: { type: 'value', name: '同比增长%', nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-    series: [{ type: 'bar', data: demandSectors.map((d, i) => ({ value: d.growth, itemStyle: { color: d.growth >= 0 ? COLORS[i % COLORS.length] : '#ef4444' } })), barWidth: '40%' }],
+    xAxis: { type: 'category', data: demandSectors.map((d) => d.sector), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 20 } },
+    yAxis: { type: 'value', name: '同比增长%', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+    series: [{ type: 'bar', data: demandSectors.map((d, i) => ({ value: d.growth, itemStyle: { color: d.growth >= 0 ? COLORS[i % COLORS.length] : '#FF4D4F' } })), barWidth: '40%' }],
   }), [demandSectors]);
 
   const balanceOption = useMemo(() => {
@@ -36,10 +36,10 @@ const SupplyDemand: React.FC = () => {
       tooltip: CHART_TOOLTIP,
       legend: { ...CHART_LEGEND, data: ['供给', '需求', '盈余/缺口'] },
       grid: { top: 40, right: 60, bottom: 30, left: 50 },
-      xAxis: { type: 'category', data: balance.map((b) => b.year), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+      xAxis: { type: 'category', data: balance.map((b) => b.year), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
       yAxis: [
-        { type: 'value', name: 'LCE万吨', nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-        { type: 'value', name: '盈余/缺口', position: 'right' as const, nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: 'LCE万吨', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: '盈余/缺口', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
       ],
       series: [
         {
@@ -47,8 +47,8 @@ const SupplyDemand: React.FC = () => {
           data: balance.map((b) => ({
             value: b.supply,
             itemStyle: b.isForecast
-              ? { color: 'rgba(0,100,255,0.3)', borderColor: '#0064ff', borderWidth: 1, borderType: 'dashed' as const }
-              : { color: '#0064ff' },
+              ? { color: 'rgba(0,100,255,0.3)', borderColor: '#0064FF', borderWidth: 1, borderType: 'dashed' as const }
+              : { color: '#0064FF' },
           })),
           barWidth: '20%',
         },
@@ -57,8 +57,8 @@ const SupplyDemand: React.FC = () => {
           data: balance.map((b) => ({
             value: b.demand,
             itemStyle: b.isForecast
-              ? { color: 'rgba(245,158,11,0.3)', borderColor: '#f59e0b', borderWidth: 1, borderType: 'dashed' as const }
-              : { color: '#f59e0b' },
+              ? { color: 'rgba(250,173,20,0.3)', borderColor: '#FAAD14', borderWidth: 1, borderType: 'dashed' as const }
+              : { color: '#FAAD14' },
           })),
           barWidth: '20%',
         },
@@ -66,13 +66,13 @@ const SupplyDemand: React.FC = () => {
           name: '盈余/缺口', type: 'line', yAxisIndex: 1,
           data: balance.map((b) => b.surplus),
           smooth: true, symbol: 'circle', symbolSize: 6,
-          lineStyle: { color: '#10b981', width: 2 },
-          itemStyle: { color: '#10b981' },
+          lineStyle: { color: '#00C86E', width: 2 },
+          itemStyle: { color: '#00C86E' },
           markLine: forecastX != null ? {
             silent: true, symbol: 'none',
             lineStyle: { color: 'rgba(0,0,0,0.15)', type: 'dashed' as const },
             data: [{ xAxis: forecastX }],
-            label: { formatter: '预测', fontSize: 10, color: '#8c8c8c' },
+            label: { formatter: '预测', fontSize: 10, color: '#8C8C8C' },
           } : undefined,
         },
       ],
@@ -91,19 +91,19 @@ const SupplyDemand: React.FC = () => {
     return {
       tooltip: CHART_TOOLTIP,
       grid: { top: 20, right: 20, bottom: 30, left: 80 },
-      xAxis: { type: 'value', max: 100, name: '%', nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      yAxis: { type: 'category', data: producers.map((p) => p.name), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: CHART_AXIS_LABEL },
+      xAxis: { type: 'value', max: 100, name: '%', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      yAxis: { type: 'category', data: producers.map((p) => p.name), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: CHART_AXIS_LABEL },
       series: [{
         type: 'bar',
         data: producers.map((p) => ({
           value: p.rate,
           itemStyle: {
-            color: p.rate >= 85 ? '#10b981' : p.rate >= 75 ? '#f59e0b' : '#ef4444',
+            color: p.rate >= 85 ? '#00C86E' : p.rate >= 75 ? '#FAAD14' : '#FF4D4F',
             borderRadius: [0, 4, 4, 0],
           },
         })),
         barWidth: '50%',
-        label: { show: true, position: 'right' as const, formatter: '{c}%', fontSize: 12, color: '#6b7280' },
+        label: { show: true, position: 'right' as const, formatter: '{c}%', fontSize: 12, color: '#8C8C8C' },
       }],
     };
   }, []);
@@ -120,19 +120,19 @@ const SupplyDemand: React.FC = () => {
     return {
       tooltip: CHART_TOOLTIP,
       grid: { top: 40, right: 30, bottom: 30, left: 140 },
-      xAxis: { type: 'value', name: '产能(万吨/年)', nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      yAxis: { type: 'category', data: pipeline.map((p) => `${p.project}(${p.timeline})`), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, fontSize: 11 } },
+      xAxis: { type: 'value', name: '产能(万吨/年)', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      yAxis: { type: 'category', data: pipeline.map((p) => `${p.project}(${p.timeline})`), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, fontSize: 11 } },
       series: [{
         type: 'bar',
         data: pipeline.map((p) => ({
           value: p.capacity,
           itemStyle: {
-            color: p.status === '建设中' ? '#0064ff' : p.status === '勘探中' ? '#f59e0b' : '#8c8c8c',
+            color: p.status === '建设中' ? '#0064FF' : p.status === '勘探中' ? '#FAAD14' : '#8C8C8C',
             borderRadius: [0, 4, 4, 0],
           },
         })),
         barWidth: '50%',
-        label: { show: true, position: 'right' as const, formatter: '{c}万吨', fontSize: 12, color: '#6b7280' },
+        label: { show: true, position: 'right' as const, formatter: '{c}万吨', fontSize: 12, color: '#8C8C8C' },
       }],
     };
   }, []);
@@ -145,8 +145,8 @@ const SupplyDemand: React.FC = () => {
       tooltip: CHART_TOOLTIP,
       legend: { ...CHART_LEGEND, data: ['产能利用率'] },
       grid: { top: 40, right: 20, bottom: 30, left: 70 },
-      xAxis: { type: 'category', data: pricePoints.map((p) => (p / 10000) + '万'), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, color: '#9ca3af' } },
-      yAxis: { type: 'value', name: '产能利用率%', min: 60, max: 105, nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      xAxis: { type: 'category', data: pricePoints.map((p) => (p / 10000) + '万'), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, color: '#8C8C8C' } },
+      yAxis: { type: 'value', name: '产能利用率%', min: 60, max: 105, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
       series: [{
         name: '产能利用率',
         type: 'line',
@@ -154,22 +154,22 @@ const SupplyDemand: React.FC = () => {
         smooth: true,
         symbol: 'circle',
         symbolSize: 8,
-        lineStyle: { color: '#0064ff', width: 2 },
-        itemStyle: { color: '#0064ff' },
+        lineStyle: { color: '#0064FF', width: 2 },
+        itemStyle: { color: '#0064FF' },
         areaStyle: {
           color: { type: 'linear' as const, x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(0,100,255,0.15)' }, { offset: 1, color: 'rgba(0,100,255,0)' }] },
         },
         markLine: {
           silent: true,
-          lineStyle: { color: '#ef4444', type: 'dashed' },
-          data: [{ yAxis: 90, label: { formatter: '高利用率阈值', fontSize: 11, color: '#ef4444' } }],
+          lineStyle: { color: '#FF4D4F', type: 'dashed' },
+          data: [{ yAxis: 90, label: { formatter: '高利用率阈值', fontSize: 11, color: '#FF4D4F' } }],
         },
       }],
     };
   }, []);
 
   const projectColumns = [
-    { title: '项目', dataIndex: 'name', key: 'name', width: 130, render: (v: string) => <span style={{ fontWeight: 600, color: '#1a1a2e' }}>{v}</span> },
+    { title: '项目', dataIndex: 'name', key: 'name', width: 130, render: (v: string) => <span style={{ fontWeight: 600, color: '#1F1F1F' }}>{v}</span> },
     { title: '国家', dataIndex: 'country', key: 'country', width: 90 },
     {
       title: '状态', dataIndex: 'status', key: 'status', width: 80,
@@ -193,33 +193,33 @@ const SupplyDemand: React.FC = () => {
   const supplyTab = (
     <div>
       {/* 汇总统计横条 */}
-      <div style={{ ...CARD, background: '#fff', padding: '20px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ ...CARD, background: '#FFFFFF', padding: '20px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 12, color: '#8c8c8c', marginBottom: 6 }}>全球供应量</div>
-          <div style={{ fontSize: 24, fontWeight: 700, color: '#0064ff' }}>{summary?.globalSupply ?? '-'} <span style={{ fontSize: 12, fontWeight: 400, color: '#bfbfbf' }}>LCE万吨</span></div>
+          <div style={{ fontSize: 12, color: '#8C8C8C', marginBottom: 6 }}>全球供应量</div>
+          <div style={{ fontSize: 24, fontWeight: 700, color: '#0064FF' }}>{summary?.globalSupply ?? '-'} <span style={{ fontSize: 12, fontWeight: 400, color: '#BFBFBF' }}>LCE万吨</span></div>
         </div>
-        <div style={{ width: 1, height: 40, background: '#f0f0f0' }} />
+        <div style={{ width: 1, height: 40, background: '#F0F0F0' }} />
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 12, color: '#8c8c8c', marginBottom: 6 }}>同比增长</div>
-          <div style={{ fontSize: 24, fontWeight: 700, color: '#10b981' }}>{summary?.yoyChange ?? '-'}%</div>
+          <div style={{ fontSize: 12, color: '#8C8C8C', marginBottom: 6 }}>同比增长</div>
+          <div style={{ fontSize: 24, fontWeight: 700, color: '#00C86E' }}>{summary?.yoyChange ?? '-'}%</div>
         </div>
-        <div style={{ width: 1, height: 40, background: '#f0f0f0' }} />
+        <div style={{ width: 1, height: 40, background: '#F0F0F0' }} />
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 12, color: '#8c8c8c', marginBottom: 6 }}>主要生产国</div>
-          <div style={{ fontSize: 24, fontWeight: 700, color: '#1a1a2e' }}>{summary?.topCountries.length ?? '-'} <span style={{ fontSize: 12, fontWeight: 400, color: '#bfbfbf' }}>个</span></div>
+          <div style={{ fontSize: 12, color: '#8C8C8C', marginBottom: 6 }}>主要生产国</div>
+          <div style={{ fontSize: 24, fontWeight: 700, color: '#1F1F1F' }}>{summary?.topCountries.length ?? '-'} <span style={{ fontSize: 12, fontWeight: 400, color: '#BFBFBF' }}>个</span></div>
         </div>
       </div>
 
       {/* 产能利用率 + 扩产管道 */}
       <Row gutter={GAP} style={{ marginTop: GAP }}>
         <Col xs={24} lg={12}>
-          <div style={{ ...CARD, background: '#fff', ...CARD_BODY }}>
+          <div style={{ ...CARD, background: '#FFFFFF', ...CARD_BODY }}>
             <div style={SECTION}>产能利用率（主要生产国）</div>
             <ReactECharts option={utilizationOption} style={{ height: 260 }} />
           </div>
         </Col>
         <Col xs={24} lg={12}>
-          <div style={{ ...CARD, background: '#fff', ...CARD_BODY }}>
+          <div style={{ ...CARD, background: '#FFFFFF', ...CARD_BODY }}>
             <div style={SECTION}>扩产管道</div>
             <ReactECharts option={pipelineOption} style={{ height: 260 }} />
           </div>
@@ -227,13 +227,13 @@ const SupplyDemand: React.FC = () => {
       </Row>
 
       {/* 供给弹性分析 */}
-      <div style={{ ...CARD, background: '#fff', marginTop: GAP, ...CARD_BODY }}>
+      <div style={{ ...CARD, background: '#FFFFFF', marginTop: GAP, ...CARD_BODY }}>
         <div style={SECTION}>供给弹性分析</div>
         <ReactECharts option={elasticityOption} style={{ height: 300 }} />
       </div>
 
       {/* 全球矿山项目表 */}
-      <div style={{ ...CARD, background: '#fff', marginTop: GAP }}>
+      <div style={{ ...CARD, background: '#FFFFFF', marginTop: GAP }}>
         <div style={{ ...CARD_BODY, paddingBottom: 0 }}>
           <div style={SECTION}>全球矿山项目</div>
         </div>
@@ -252,20 +252,20 @@ const SupplyDemand: React.FC = () => {
     <div>
       <Row gutter={GAP}>
         <Col xs={24} lg={12}>
-          <div style={{ ...CARD, background: '#fff', ...CARD_BODY }}>
+          <div style={{ ...CARD, background: '#FFFFFF', ...CARD_BODY }}>
             <div style={SECTION}>需求结构</div>
             <ReactECharts option={demandPieOption} style={{ height: 300 }} />
           </div>
         </Col>
         <Col xs={24} lg={12}>
-          <div style={{ ...CARD, background: '#fff', ...CARD_BODY }}>
+          <div style={{ ...CARD, background: '#FFFFFF', ...CARD_BODY }}>
             <div style={SECTION}>需求同比增长</div>
             <ReactECharts option={demandBarOption} style={{ height: 300 }} />
           </div>
         </Col>
       </Row>
 
-      <div style={{ ...CARD, background: '#fff', marginTop: GAP, ...CARD_BODY }}>
+      <div style={{ ...CARD, background: '#FFFFFF', marginTop: GAP, ...CARD_BODY }}>
         <div style={SECTION}>供需平衡趋势</div>
         <ReactECharts option={balanceOption} style={{ height: 350 }} />
       </div>
@@ -273,7 +273,7 @@ const SupplyDemand: React.FC = () => {
   );
 
   return (
-    <div style={{ ...CARD, background: '#fff', ...CARD_BODY }}>
+    <div style={{ ...CARD, background: '#FFFFFF', ...CARD_BODY }}>
       <Tabs
         defaultActiveKey="supply"
         items={[

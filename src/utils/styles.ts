@@ -1,10 +1,9 @@
-// 全局共享样式常量 — 暗色玻璃拟态主题
+// 全局共享样式常量 — CATL 设计规范
 
 export const CARD = {
-  borderRadius: 14,
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.08)',
-  backdropFilter: 'blur(20px)',
+  borderRadius: 8,
+  background: '#FFFFFF',
+  border: '1px solid #E8E8E8',
   position: 'relative' as const,
   overflow: 'hidden' as const,
 } as const;
@@ -14,44 +13,43 @@ export const CARD_BODY = { padding: '20px 24px' } as const;
 export const SECTION = {
   fontSize: 11,
   fontWeight: 600 as const,
-  color: '#8892b0',
+  color: '#8C8C8C',
   marginBottom: 16,
   paddingBottom: 12,
-  borderBottom: '1px solid rgba(255,255,255,0.06)',
+  borderBottom: '1px solid #F0F0F0',
   textTransform: 'uppercase' as const,
   letterSpacing: 1.2,
 };
 
 export const GAP = 16;
 
-// 玻璃卡片内部 top highlight line
 export const GLASS_HIGHLIGHT = {
   position: 'absolute' as const,
   top: 0,
   left: 0,
   right: 0,
-  height: 1,
-  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+  height: 2,
+  background: 'linear-gradient(90deg, #0064FF, transparent)',
 };
 
-// 霓虹色系
-export const NEON = {
-  blue: '#4f8cff',
-  cyan: '#00d4ff',
-  purple: '#a855f7',
-  green: '#10b981',
-  red: '#ef4444',
-  yellow: '#f59e0b',
-  pink: '#ec4899',
+// CATL 品牌色系
+export const BRAND = {
+  blue: '#0064FF',
+  cyan: '#13C2C2',
+  purple: '#722ED1',
+  green: '#00C86E',
+  red: '#FF4D4F',
+  yellow: '#FAAD14',
+  pink: '#EB2F96',
 };
 
 // 文字色
 export const TEXT = {
-  primary: '#f0f0f0',
-  secondary: '#8892b0',
-  muted: '#4a5568',
-  value: '#f0f0f0',
-  bullish: '#10b981',
-  bearish: '#ef4444',
-  neutral: '#f59e0b',
+  primary: '#1F1F1F',
+  secondary: '#8C8C8C',
+  muted: '#BFBFBF',
+  value: '#1F1F1F',
+  bullish: '#FF4D4F',
+  bearish: '#00C86E',
+  neutral: '#FAAD14',
 };

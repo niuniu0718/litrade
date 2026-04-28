@@ -38,8 +38,9 @@ export interface EVSalesData {
 /** 储能市场数据 */
 export interface EnergyStorageData {
   month: string;
-  installation: number;     // 装机量 GWh
-  yoyChange: number;        // 同比%
+  installation: number;     // 全球装机量 GWh
+  catlInstallation: number; // CATL装机量 GWh
+  yoyChange: number;        // 全球同比%
 }
 
 /** 需求预测数据 */

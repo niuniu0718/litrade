@@ -79,7 +79,7 @@ export function generateInventoryTrend(): InventoryTrend[] {
 export function generateInventoryPriceRelation(): InventoryPriceRelation[] {
   const data: InventoryPriceRelation[] = [];
   let inventoryBase = 40000;
-  let priceBase = 75000;
+  let priceBase = 174000;
 
   for (let i = 11; i >= 0; i--) {
     const date = new Date();

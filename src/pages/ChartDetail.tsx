@@ -58,9 +58,9 @@ const ChartDetail: React.FC = () => {
       trigger: 'axis',
       axisPointer: { type: 'cross' },
       backgroundColor: 'rgba(255,255,255,0.96)',
-      borderColor: '#e5e7eb',
+      borderColor: '#E8E8E8',
       borderWidth: 1,
-      textStyle: { color: '#1a1a2e', fontSize: 13 },
+      textStyle: { color: '#1F1F1F', fontSize: 13 },
     },
     legend: {
       data: [
@@ -71,7 +71,7 @@ const ChartDetail: React.FC = () => {
       top: 0,
       itemWidth: 16,
       itemHeight: 2,
-      textStyle: { fontSize: 12, color: '#6b7280' },
+      textStyle: { fontSize: 12, color: '#8C8C8C' },
     },
     grid: [
       { top: 40, left: 65, right: 20, height: '55%' },
@@ -82,17 +82,17 @@ const ChartDetail: React.FC = () => {
         type: 'category',
         data: sliced.map((p) => p.date),
         gridIndex: 0,
-        axisLine: { lineStyle: { color: '#e5e7eb' } },
+        axisLine: { lineStyle: { color: '#E8E8E8' } },
         axisTick: { show: false },
-        axisLabel: { color: '#9ca3af', fontSize: 11 },
+        axisLabel: { color: '#8C8C8C', fontSize: 11 },
       },
       {
         type: 'category',
         data: sliced.map((p) => p.date),
         gridIndex: 1,
-        axisLine: { lineStyle: { color: '#e5e7eb' } },
+        axisLine: { lineStyle: { color: '#E8E8E8' } },
         axisTick: { show: false },
-        axisLabel: { color: '#9ca3af', fontSize: 11 },
+        axisLabel: { color: '#8C8C8C', fontSize: 11 },
       },
     ],
     yAxis: [
@@ -102,8 +102,8 @@ const ChartDetail: React.FC = () => {
         gridIndex: 0,
         axisLine: { show: false },
         axisTick: { show: false },
-        splitLine: { lineStyle: { color: '#f3f4f6' } },
-        axisLabel: { color: '#9ca3af', fontSize: 11 },
+        splitLine: { lineStyle: { color: '#F0F0F0' } },
+        axisLabel: { color: '#8C8C8C', fontSize: 11 },
       },
       {
         type: 'value',
@@ -111,8 +111,8 @@ const ChartDetail: React.FC = () => {
         gridIndex: 1,
         axisLine: { show: false },
         axisTick: { show: false },
-        splitLine: { lineStyle: { color: '#f3f4f6' } },
-        axisLabel: { color: '#9ca3af', fontSize: 11 },
+        splitLine: { lineStyle: { color: '#F0F0F0' } },
+        axisLabel: { color: '#8C8C8C', fontSize: 11 },
       },
     ],
     series: [
@@ -123,10 +123,10 @@ const ChartDetail: React.FC = () => {
         xAxisIndex: 0,
         yAxisIndex: 0,
         itemStyle: {
-          color: '#f5222d',
-          color0: '#52c41a',
-          borderColor: '#f5222d',
-          borderColor0: '#52c41a',
+          color: '#FF4D4F',
+          color0: '#00C86E',
+          borderColor: '#FF4D4F',
+          borderColor0: '#00C86E',
         },
       },
       ...maLines.map((n) => ({
@@ -152,7 +152,7 @@ const ChartDetail: React.FC = () => {
         data: sliced.map((p) => p.volume),
         xAxisIndex: 1,
         yAxisIndex: 1,
-        itemStyle: { color: '#0064ff', opacity: 0.5 },
+        itemStyle: { color: '#0064FF', opacity: 0.5 },
       },
     ],
   };
@@ -179,10 +179,10 @@ const ChartDetail: React.FC = () => {
       >
         <Row gutter={16} align="middle">
           <Col>
-            <span style={{ fontSize: 16, fontWeight: 600, color: '#1a1a2e' }}>
+            <span style={{ fontSize: 16, fontWeight: 600, color: '#1F1F1F' }}>
               电池级碳酸锂
             </span>
-            <span style={{ fontSize: 12, color: '#9ca3af', marginLeft: 8 }}>
+            <span style={{ fontSize: 12, color: '#8C8C8C', marginLeft: 8 }}>
               K线详情
             </span>
           </Col>
@@ -240,12 +240,12 @@ const ChartDetail: React.FC = () => {
         </Col>
         <Col span={6}>
           <Card style={{ borderRadius: 10, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <Statistic title="区间最高" value={periodHigh} suffix={productInfo?.unit} valueStyle={{ color: '#f5222d' }} />
+            <Statistic title="区间最高" value={periodHigh} suffix={productInfo?.unit} valueStyle={{ color: '#FF4D4F' }} />
           </Card>
         </Col>
         <Col span={6}>
           <Card style={{ borderRadius: 10, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <Statistic title="区间最低" value={periodLow} suffix={productInfo?.unit} valueStyle={{ color: '#52c41a' }} />
+            <Statistic title="区间最低" value={periodLow} suffix={productInfo?.unit} valueStyle={{ color: '#00C86E' }} />
           </Card>
         </Col>
         <Col span={3}>

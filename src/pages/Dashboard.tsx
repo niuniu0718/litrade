@@ -13,9 +13,9 @@ import type { SignalDirection } from '../types/dashboard';
 import AIAnalysisPanel from '../components/AIAnalysisPanel';
 
 const signalConfig: Record<SignalDirection, { label: string; color: string; tagColor: string; bg: string }> = {
-  bullish: { label: '偏多', color: '#10b981', tagColor: '#10b981', bg: 'rgba(16,185,129,0.06)' },
-  bearish: { label: '偏空', color: '#ef4444', tagColor: '#ef4444', bg: 'rgba(239,68,68,0.06)' },
-  neutral: { label: '中性', color: '#f59e0b', tagColor: '#f59e0b', bg: 'rgba(245,158,11,0.06)' },
+  bullish: { label: '偏多', color: '#FF4D4F', tagColor: '#FF4D4F', bg: 'rgba(255,77,79,0.06)' },
+  bearish: { label: '偏空', color: '#00C86E', tagColor: '#00C86E', bg: 'rgba(0,200,110,0.06)' },
+  neutral: { label: '中性', color: '#FAAD14', tagColor: '#FAAD14', bg: 'rgba(250,173,20,0.06)' },
 };
 
 type DimensionKey = 'demand' | 'supply' | 'inventory' | 'macro';
@@ -27,24 +27,24 @@ const dimensionConfig: Record<DimensionKey, {
   bg: string;
   gradientStart: string;
 }> = {
-  demand: { label: '需求', icon: '⚡', color: '#4f8cff', bg: 'rgba(79,140,255,0.06)', gradientStart: '#4f8cff' },
-  supply: { label: '供给', icon: '⛏', color: '#a855f7', bg: 'rgba(168,85,247,0.06)', gradientStart: '#a855f7' },
-  inventory: { label: '库存', icon: '📦', color: '#f59e0b', bg: 'rgba(245,158,11,0.06)', gradientStart: '#f59e0b' },
-  macro: { label: '宏观', icon: '🌐', color: '#10b981', bg: 'rgba(16,185,129,0.06)', gradientStart: '#10b981' },
+  demand: { label: '需求', icon: '⚡', color: '#0064FF', bg: 'rgba(0,100,255,0.06)', gradientStart: '#0064FF' },
+  supply: { label: '供给', icon: '⛏', color: '#722ED1', bg: 'rgba(114,46,209,0.06)', gradientStart: '#722ED1' },
+  inventory: { label: '库存', icon: '📦', color: '#FAAD14', bg: 'rgba(250,173,20,0.06)', gradientStart: '#FAAD14' },
+  macro: { label: '宏观和政策', icon: '📋', color: '#00C86E', bg: 'rgba(0,200,110,0.06)', gradientStart: '#00C86E' },
 };
 
 // ────────────── 需求详情面板 ──────────────
 const DemandDetail: React.FC = () => {
-  const { downstreamSectors, formula, evSales, loading, fetchAll } = useDemandStore();
+  const { downstreamSectors, formula, evSales, energyStorage, loading, fetchAll } = useDemandStore();
 
   useEffect(() => { if (!downstreamSectors.length) fetchAll(); }, []);
 
   const sectorPieOption = useMemo(() => ({
-    tooltip: { trigger: 'item' as const, backgroundColor: 'rgba(10,14,39,0.92)', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, textStyle: { color: '#f0f0f0', fontSize: 13 } },
-    legend: { orient: 'vertical' as const, right: 10, top: 'center', textStyle: { fontSize: 12, color: '#8892b0' } },
+    tooltip: { trigger: 'item' as const, backgroundColor: 'rgba(255,255,255,0.96)', borderColor: '#E8E8E8', borderWidth: 1, textStyle: { color: '#1F1F1F', fontSize: 13 } },
+    legend: { orient: 'vertical' as const, right: 10, top: 'center', textStyle: { fontSize: 12, color: '#8C8C8C' } },
     series: [{
       type: 'pie', radius: ['40%', '70%'], center: ['35%', '50%'], avoidLabelOverlap: false,
-      itemStyle: { borderRadius: 6, borderColor: 'rgba(10,14,39,0.8)', borderWidth: 2 }, label: { show: false },
+      itemStyle: { borderRadius: 6, borderColor: '#FFFFFF', borderWidth: 2 }, label: { show: false },
       data: downstreamSectors.map((d, i) => ({ value: d.share, name: d.sector, itemStyle: { color: COLORS[i % COLORS.length] } })),
     }],
   }), [downstreamSectors]);
@@ -53,17 +53,33 @@ const DemandDetail: React.FC = () => {
     tooltip: CHART_TOOLTIP,
     legend: { ...CHART_LEGEND, data: ['全球EV销量', '中国EV销量'] },
     grid: { top: 40, right: 60, bottom: 30, left: 60 },
-    xAxis: { type: 'category', data: evSales.map((d) => d.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+    xAxis: { type: 'category', data: evSales.map((d) => d.month), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
     yAxis: [
-      { type: 'value', name: '万辆', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      { type: 'value', name: '同比%', position: 'right' as const, nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '万辆', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '同比%', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
     ],
     series: [
-      { name: '全球EV销量', type: 'bar', data: evSales.map((d) => d.globalSales), itemStyle: { color: '#4f8cff', borderRadius: [4, 4, 0, 0] }, barWidth: '25%' },
-      { name: '中国EV销量', type: 'bar', data: evSales.map((d) => d.chinaSales), itemStyle: { color: '#f59e0b', borderRadius: [4, 4, 0, 0] }, barWidth: '25%' },
-      { name: '全球同比', type: 'line', yAxisIndex: 1, data: evSales.map((d) => d.globalYoy), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#10b981', width: 2, shadowColor: '#10b981', shadowBlur: 4 }, itemStyle: { color: '#10b981' } },
+      { name: '全球EV销量', type: 'bar', data: evSales.map((d) => d.globalSales), itemStyle: { color: '#0064FF', borderRadius: [4, 4, 0, 0] }, barWidth: '25%' },
+      { name: '中国EV销量', type: 'bar', data: evSales.map((d) => d.chinaSales), itemStyle: { color: '#FAAD14', borderRadius: [4, 4, 0, 0] }, barWidth: '25%' },
+      { name: '全球同比', type: 'line', yAxisIndex: 1, data: evSales.map((d) => d.globalYoy), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#00C86E', width: 2 }, itemStyle: { color: '#00C86E' } },
     ],
   }), [evSales]);
+
+  const storageOption = useMemo(() => ({
+    tooltip: CHART_TOOLTIP,
+    legend: { ...CHART_LEGEND, data: ['全球装机量', 'CATL装机量', '同比增速'] },
+    grid: { top: 40, right: 60, bottom: 30, left: 60 },
+    xAxis: { type: 'category', data: energyStorage.map((d) => d.month), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+    yAxis: [
+      { type: 'value', name: 'GWh', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '同比%', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+    ],
+    series: [
+      { name: '全球装机量', type: 'bar', data: energyStorage.map((d) => d.installation), itemStyle: { color: '#722ED1', borderRadius: [4, 4, 0, 0] }, barWidth: '25%' },
+      { name: 'CATL装机量', type: 'bar', data: energyStorage.map((d) => d.catlInstallation), itemStyle: { color: '#0064FF', borderRadius: [4, 4, 0, 0] }, barWidth: '25%' },
+      { name: '同比增速', type: 'line', yAxisIndex: 1, data: energyStorage.map((d) => d.yoyChange), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#FAAD14', width: 2 }, itemStyle: { color: '#FAAD14' } },
+    ],
+  }), [energyStorage]);
 
   if (loading || !formula) return <PageLoading />;
 
@@ -74,20 +90,20 @@ const DemandDetail: React.FC = () => {
           <ReactECharts option={sectorPieOption} style={{ height: 260 }} />
         </Col>
         <Col xs={24} lg={14}>
-          <div style={{ background: 'rgba(79,140,255,0.06)', borderRadius: 10, padding: '14px 18px', marginBottom: 12, border: '1px solid rgba(79,140,255,0.1)' }}>
+          <div style={{ background: 'rgba(0,100,255,0.06)', borderRadius: 10, padding: '14px 18px', marginBottom: 12, border: '1px solid rgba(0,100,255,0.1)' }}>
             <div style={{ fontSize: 13, color: TEXT.primary, fontWeight: 600, marginBottom: 6 }}>
               需求传导公式
             </div>
             <div style={{ fontSize: 12, color: TEXT.secondary }}>
-              计算结果：<span style={{ fontSize: 18, fontWeight: 700, color: '#4f8cff', textShadow: '0 0 10px rgba(79,140,255,0.3)' }}>{formula.result}</span> {formula.resultUnit}/年
+              计算结果：<span style={{ fontSize: 18, fontWeight: 700, color: '#0064FF' }}>{formula.result}</span> {formula.resultUnit}/年
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 10 }}>
             {downstreamSectors.map((s, i) => (
-              <div key={s.sector} style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.02)' }}>
+              <div key={s.sector} style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #F0F0F0', background: '#FAFAFA' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
                   <span style={{ fontSize: 12, color: TEXT.primary, fontWeight: 600 }}>{s.sector}</span>
-                  <Tag style={{ margin: 0, fontSize: 10, background: s.growth >= 0 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)', color: s.growth >= 0 ? '#10b981' : '#ef4444' }}>
+                  <Tag style={{ margin: 0, fontSize: 10, background: s.growth >= 0 ? 'rgba(0,200,110,0.12)' : 'rgba(255,77,79,0.12)', color: s.growth >= 0 ? '#00C86E' : '#FF4D4F' }}>
                     {s.growth >= 0 ? '+' : ''}{s.growth}%
                   </Tag>
                 </div>
@@ -103,6 +119,10 @@ const DemandDetail: React.FC = () => {
       <div style={{ marginTop: GAP }}>
         <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>全球EV销量追踪</div>
         <ReactECharts option={evSalesOption} style={{ height: 300 }} />
+      </div>
+      <div style={{ marginTop: GAP }}>
+        <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>储能装机趋势</div>
+        <ReactECharts option={storageOption} style={{ height: 300 }} />
       </div>
     </div>
   );
@@ -121,10 +141,10 @@ const SupplyDetail: React.FC = () => {
       tooltip: CHART_TOOLTIP,
       legend: { ...CHART_LEGEND, data: ['供给', '需求', '盈余/缺口'] },
       grid: { top: 40, right: 60, bottom: 30, left: 50 },
-      xAxis: { type: 'category', data: balance.map((b) => b.year), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+      xAxis: { type: 'category', data: balance.map((b) => b.year), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
       yAxis: [
-        { type: 'value', name: 'LCE万吨', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-        { type: 'value', name: '盈余/缺口', position: 'right' as const, nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: 'LCE万吨', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: '盈余/缺口', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
       ],
       series: [
         {
@@ -132,8 +152,8 @@ const SupplyDetail: React.FC = () => {
           data: balance.map((b) => ({
             value: b.supply,
             itemStyle: b.isForecast
-              ? { color: 'rgba(168,85,247,0.3)', borderColor: '#a855f7', borderWidth: 1, borderType: 'dashed' as const, borderRadius: [4, 4, 0, 0] }
-              : { color: '#a855f7', borderRadius: [4, 4, 0, 0] },
+              ? { color: 'rgba(114,46,209,0.3)', borderColor: '#722ED1', borderWidth: 1, borderType: 'dashed' as const, borderRadius: [4, 4, 0, 0] }
+              : { color: '#722ED1', borderRadius: [4, 4, 0, 0] },
           })),
           barWidth: '20%',
         },
@@ -142,8 +162,8 @@ const SupplyDetail: React.FC = () => {
           data: balance.map((b) => ({
             value: b.demand,
             itemStyle: b.isForecast
-              ? { color: 'rgba(79,140,255,0.3)', borderColor: '#4f8cff', borderWidth: 1, borderType: 'dashed' as const, borderRadius: [4, 4, 0, 0] }
-              : { color: '#4f8cff', borderRadius: [4, 4, 0, 0] },
+              ? { color: 'rgba(0,100,255,0.3)', borderColor: '#0064FF', borderWidth: 1, borderType: 'dashed' as const, borderRadius: [4, 4, 0, 0] }
+              : { color: '#0064FF', borderRadius: [4, 4, 0, 0] },
           })),
           barWidth: '20%',
         },
@@ -151,13 +171,13 @@ const SupplyDetail: React.FC = () => {
           name: '盈余/缺口', type: 'line', yAxisIndex: 1,
           data: balance.map((b) => b.surplus),
           smooth: true, symbol: 'circle', symbolSize: 6,
-          lineStyle: { color: '#10b981', width: 2 },
-          itemStyle: { color: '#10b981' },
+          lineStyle: { color: '#00C86E', width: 2 },
+          itemStyle: { color: '#00C86E' },
           markLine: forecastX != null ? {
             silent: true, symbol: 'none',
-            lineStyle: { color: 'rgba(255,255,255,0.2)', type: 'dashed' as const },
+            lineStyle: { color: 'rgba(0,0,0,0.15)', type: 'dashed' as const },
             data: [{ xAxis: forecastX }],
-            label: { formatter: '预测', fontSize: 10, color: '#8892b0' },
+            label: { formatter: '预测', fontSize: 10, color: '#8C8C8C' },
           } : undefined,
         },
       ],
@@ -175,16 +195,16 @@ const SupplyDetail: React.FC = () => {
     return {
       tooltip: CHART_TOOLTIP,
       grid: { top: 20, right: 20, bottom: 30, left: 80 },
-      xAxis: { type: 'value', max: 100, name: '%', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      yAxis: { type: 'category', data: producers.map((p) => p.name), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: CHART_AXIS_LABEL },
+      xAxis: { type: 'value', max: 100, name: '%', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      yAxis: { type: 'category', data: producers.map((p) => p.name), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: CHART_AXIS_LABEL },
       series: [{
         type: 'bar',
         data: producers.map((p) => ({
           value: p.rate,
-          itemStyle: { color: p.rate >= 85 ? '#10b981' : p.rate >= 75 ? '#f59e0b' : '#ef4444', borderRadius: [0, 4, 4, 0] },
+          itemStyle: { color: p.rate >= 85 ? '#00C86E' : p.rate >= 75 ? '#FAAD14' : '#FF4D4F', borderRadius: [0, 4, 4, 0] },
         })),
         barWidth: '50%',
-        label: { show: true, position: 'right' as const, formatter: '{c}%', fontSize: 12, color: '#8892b0' },
+        label: { show: true, position: 'right' as const, formatter: '{c}%', fontSize: 12, color: '#8C8C8C' },
       }],
     };
   }, []);
@@ -200,19 +220,19 @@ const SupplyDetail: React.FC = () => {
     return {
       tooltip: CHART_TOOLTIP,
       grid: { top: 20, right: 30, bottom: 30, left: 160 },
-      xAxis: { type: 'value', name: '产能(万吨/年)', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      yAxis: { type: 'category', data: pipeline.map((p) => `${p.project}(${p.timeline})`), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, fontSize: 11 } },
+      xAxis: { type: 'value', name: '产能(万吨/年)', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      yAxis: { type: 'category', data: pipeline.map((p) => `${p.project}(${p.timeline})`), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, fontSize: 11 } },
       series: [{
         type: 'bar',
         data: pipeline.map((p) => ({
           value: p.capacity,
           itemStyle: {
-            color: p.status === '建设中' ? '#4f8cff' : p.status === '勘探中' ? '#f59e0b' : '#6b7280',
+            color: p.status === '建设中' ? '#0064FF' : p.status === '勘探中' ? '#FAAD14' : '#8C8C8C',
             borderRadius: [0, 4, 4, 0],
           },
         })),
         barWidth: '50%',
-        label: { show: true, position: 'right' as const, formatter: '{c}万吨', fontSize: 12, color: '#8892b0' },
+        label: { show: true, position: 'right' as const, formatter: '{c}万吨', fontSize: 12, color: '#8C8C8C' },
       }],
     };
   }, []);
@@ -221,7 +241,7 @@ const SupplyDetail: React.FC = () => {
     { title: '项目名称', dataIndex: 'name', key: 'name', width: 160, render: (v: string, record: typeof projects[0]) => (
         <span
           onClick={() => setActiveProjectId(record.id)}
-          style={{ fontWeight: 600, color: '#a855f7', cursor: 'pointer' }}
+          style={{ fontWeight: 600, color: '#722ED1', cursor: 'pointer' }}
         >
           {v}
         </span>
@@ -232,12 +252,12 @@ const SupplyDetail: React.FC = () => {
       title: '状态', dataIndex: 'status', key: 'status', width: 80,
       render: (v: string) => {
         const statusMap: Record<string, { bg: string; color: string; label: string }> = {
-          producing: { bg: 'rgba(16,185,129,0.12)', color: '#10b981', label: '生产中' },
-          construction: { bg: 'rgba(79,140,255,0.12)', color: '#4f8cff', label: '建设中' },
-          exploration: { bg: 'rgba(245,158,11,0.12)', color: '#f59e0b', label: '勘探中' },
-          suspended: { bg: 'rgba(107,114,128,0.12)', color: '#6b7280', label: '停产' },
+          producing: { bg: 'rgba(0,200,110,0.12)', color: '#00C86E', label: '生产中' },
+          construction: { bg: 'rgba(0,100,255,0.12)', color: '#0064FF', label: '建设中' },
+          exploration: { bg: 'rgba(250,173,20,0.12)', color: '#FAAD14', label: '勘探中' },
+          suspended: { bg: 'rgba(140,140,140,0.12)', color: '#8C8C8C', label: '停产' },
         };
-        const s = statusMap[v] || { bg: 'rgba(255,255,255,0.06)', color: '#8892b0', label: v };
+        const s = statusMap[v] || { bg: 'rgba(0,0,0,0.04)', color: '#8C8C8C', label: v };
         return <Tag style={{ margin: 0, background: s.bg, color: s.color, borderRadius: 4, fontSize: 11 }}>{s.label}</Tag>;
       },
     },
@@ -276,10 +296,10 @@ const SupplyDetail: React.FC = () => {
       tooltip: CHART_TOOLTIP,
       legend: { ...CHART_LEGEND, data: ['产量', '同比增长率'] },
       grid: { top: 40, right: 60, bottom: 30, left: 50 },
-      xAxis: { type: 'category', data: activeProduction.map((r) => String(r.year)), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: CHART_AXIS_LABEL },
+      xAxis: { type: 'category', data: activeProduction.map((r) => String(r.year)), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: CHART_AXIS_LABEL },
       yAxis: [
-        { type: 'value', name: '万吨', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-        { type: 'value', name: '增长率%', position: 'right' as const, nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: '万吨', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: '增长率%', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
       ],
       series: [
         {
@@ -287,24 +307,24 @@ const SupplyDetail: React.FC = () => {
           data: activeProduction.map((r) => ({
             value: r.output,
             itemStyle: r.isForecast
-              ? { color: 'rgba(168,85,247,0.3)', borderColor: '#a855f7', borderWidth: 1, borderType: 'dashed' as const, borderRadius: [4, 4, 0, 0] }
-              : { color: '#a855f7', borderRadius: [4, 4, 0, 0] },
+              ? { color: 'rgba(114,46,209,0.3)', borderColor: '#722ED1', borderWidth: 1, borderType: 'dashed' as const, borderRadius: [4, 4, 0, 0] }
+              : { color: '#722ED1', borderRadius: [4, 4, 0, 0] },
           })),
           barWidth: '35%',
-          label: { show: true, position: 'top' as const, formatter: '{c}', fontSize: 12, color: '#8892b0' },
+          label: { show: true, position: 'top' as const, formatter: '{c}', fontSize: 12, color: '#8C8C8C' },
         },
         {
           name: '同比增长率', type: 'line', yAxisIndex: 1,
           data: growthRates,
           smooth: true, symbol: 'circle', symbolSize: 6,
-          lineStyle: { color: '#10b981', width: 2 },
-          itemStyle: { color: '#10b981' },
-          label: { show: true, formatter: (p: { value: number | null }) => p.value != null ? `${p.value}%` : '', fontSize: 11, color: '#10b981' },
+          lineStyle: { color: '#00C86E', width: 2 },
+          itemStyle: { color: '#00C86E' },
+          label: { show: true, formatter: (p: { value: number | null }) => p.value != null ? `${p.value}%` : '', fontSize: 11, color: '#00C86E' },
           markLine: forecastX != null ? {
             silent: true, symbol: 'none',
-            lineStyle: { color: 'rgba(255,255,255,0.2)', type: 'dashed' as const },
+            lineStyle: { color: 'rgba(0,0,0,0.15)', type: 'dashed' as const },
             data: [{ xAxis: forecastX }],
-            label: { formatter: '预测', fontSize: 10, color: '#8892b0' },
+            label: { formatter: '预测', fontSize: 10, color: '#8C8C8C' },
           } : undefined,
         },
       ],
@@ -323,21 +343,21 @@ const SupplyDetail: React.FC = () => {
         <Col xs={24} lg={12}>
           <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>全球供应概览</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
-            <div style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(168,85,247,0.15)', background: 'rgba(168,85,247,0.04)' }}>
+            <div style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(114,46,209,0.15)', background: 'rgba(114,46,209,0.04)' }}>
               <div style={{ fontSize: 10, color: TEXT.secondary, marginBottom: 4 }}>全球供应量</div>
-              <div style={{ fontSize: 24, fontWeight: 700, color: '#a855f7' }}>{summary?.globalSupply ?? '-'}</div>
+              <div style={{ fontSize: 24, fontWeight: 700, color: '#722ED1' }}>{summary?.globalSupply ?? '-'}</div>
               <div style={{ fontSize: 10, color: TEXT.secondary }}>LCE万吨</div>
             </div>
-            <div style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(168,85,247,0.15)', background: 'rgba(168,85,247,0.04)' }}>
+            <div style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(114,46,209,0.15)', background: 'rgba(114,46,209,0.04)' }}>
               <div style={{ fontSize: 10, color: TEXT.secondary, marginBottom: 4 }}>同比增长</div>
-              <div style={{ fontSize: 24, fontWeight: 700, color: '#10b981' }}>{summary?.yoyChange ?? '-'}%</div>
+              <div style={{ fontSize: 24, fontWeight: 700, color: '#00C86E' }}>{summary?.yoyChange ?? '-'}%</div>
               <div style={{ fontSize: 10, color: TEXT.secondary }}>YoY</div>
             </div>
-            <div style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(168,85,247,0.15)', background: 'rgba(168,85,247,0.04)', gridColumn: 'span 2' }}>
+            <div style={{ padding: '14px 16px', borderRadius: 10, border: '1px solid rgba(114,46,209,0.15)', background: 'rgba(114,46,209,0.04)', gridColumn: 'span 2' }}>
               <div style={{ fontSize: 10, color: TEXT.secondary, marginBottom: 4 }}>主要生产国</div>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
                 {summary?.topCountries.map((c) => (
-                  <Tag key={c.country} style={{ margin: 0, background: 'rgba(168,85,247,0.1)', color: '#a855f7', borderRadius: 4, fontSize: 11 }}>{c.country} {c.share}%</Tag>
+                  <Tag key={c.country} style={{ margin: 0, background: 'rgba(114,46,209,0.1)', color: '#722ED1', borderRadius: 4, fontSize: 11 }}>{c.country} {c.share}%</Tag>
                 ))}
               </div>
             </div>
@@ -364,7 +384,7 @@ const SupplyDetail: React.FC = () => {
             onClick: () => setActiveProjectId(record.id),
             style: {
               cursor: 'pointer',
-              background: record.id === activeProjectId ? 'rgba(168,85,247,0.08)' : undefined,
+              background: record.id === activeProjectId ? 'rgba(114,46,209,0.08)' : undefined,
             },
           })}
         />
@@ -374,8 +394,8 @@ const SupplyDetail: React.FC = () => {
           marginTop: GAP,
           padding: '16px 20px',
           borderRadius: 10,
-          border: '1px solid rgba(168,85,247,0.15)',
-          background: 'rgba(168,85,247,0.04)',
+          border: '1px solid rgba(114,46,209,0.15)',
+          background: 'rgba(114,46,209,0.04)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: TEXT.primary }}>
@@ -406,10 +426,10 @@ const SupplyDetail: React.FC = () => {
 
 // ────────────── 库存详情面板 ──────────────
 const dimensionColors: Record<string, string> = {
-  factory: '#4f8cff',
-  market: '#10b981',
-  futures: '#f59e0b',
-  total: '#a855f7',
+  factory: '#0064FF',
+  market: '#00C86E',
+  futures: '#FAAD14',
+  total: '#722ED1',
 };
 
 const InventoryDetail: React.FC = () => {
@@ -421,27 +441,27 @@ const InventoryDetail: React.FC = () => {
     tooltip: CHART_TOOLTIP,
     legend: { ...CHART_LEGEND, data: ['工厂库存', '市场库存', '期货库存', '行业总库存', '库存增减率'] },
     grid: { top: 40, right: 60, bottom: 30, left: 60 },
-    xAxis: { type: 'category', data: trend.map((d) => d.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+    xAxis: { type: 'category', data: trend.map((d) => d.month), axisLine: { lineStyle: { color: '#E8E8E8' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
     yAxis: [
-      { type: 'value', name: '库存(吨)', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      { type: 'value', name: '增减率%', position: 'right' as const, nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '库存(吨)', nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+      { type: 'value', name: '增减率%', position: 'right' as const, nameTextStyle: { color: '#8C8C8C', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
     ],
     series: [
-      { name: '工厂库存', type: 'line', data: trend.map((d) => d.factory), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#4f8cff', width: 2, shadowColor: '#4f8cff', shadowBlur: 4 }, itemStyle: { color: '#4f8cff' }, areaStyle: gradientArea('#4f8cff', 0.08) },
-      { name: '市场库存', type: 'line', data: trend.map((d) => d.market), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#10b981', width: 2, shadowColor: '#10b981', shadowBlur: 4 }, itemStyle: { color: '#10b981' } },
-      { name: '期货库存', type: 'line', data: trend.map((d) => d.futures), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#f59e0b', width: 2, shadowColor: '#f59e0b', shadowBlur: 4 }, itemStyle: { color: '#f59e0b' } },
-      { name: '行业总库存', type: 'line', data: trend.map((d) => d.total), smooth: true, symbol: 'diamond', symbolSize: 5, lineStyle: { color: '#a855f7', width: 2.5, shadowColor: '#a855f7', shadowBlur: 4 }, itemStyle: { color: '#a855f7' } },
-      { name: '库存增减率', type: 'bar', yAxisIndex: 1, data: trend.map((d) => ({ value: d.changeRate, itemStyle: { color: d.changeRate >= 0 ? 'rgba(239,68,68,0.6)' : 'rgba(16,185,129,0.6)', borderRadius: [3, 3, 0, 0] } })), barWidth: '30%' },
+      { name: '工厂库存', type: 'line', data: trend.map((d) => d.factory), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#0064FF', width: 2 }, itemStyle: { color: '#0064FF' }, areaStyle: gradientArea('#0064FF', 0.08) },
+      { name: '市场库存', type: 'line', data: trend.map((d) => d.market), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#00C86E', width: 2 }, itemStyle: { color: '#00C86E' } },
+      { name: '期货库存', type: 'line', data: trend.map((d) => d.futures), smooth: true, symbol: 'circle', symbolSize: 4, lineStyle: { color: '#FAAD14', width: 2 }, itemStyle: { color: '#FAAD14' } },
+      { name: '行业总库存', type: 'line', data: trend.map((d) => d.total), smooth: true, symbol: 'diamond', symbolSize: 5, lineStyle: { color: '#722ED1', width: 2.5 }, itemStyle: { color: '#722ED1' } },
+      { name: '库存增减率', type: 'bar', yAxisIndex: 1, data: trend.map((d) => ({ value: d.changeRate, itemStyle: { color: d.changeRate >= 0 ? 'rgba(255,77,79,0.6)' : 'rgba(0,200,110,0.6)', borderRadius: [3, 3, 0, 0] } })), barWidth: '30%' },
     ],
   }), [trend]);
 
   if (loading || !dimensions.length || !cycle) return <PageLoading />;
 
   const phaseConfig: Record<string, { color: string; icon: string }> = {
-    active_destock: { color: '#ef4444', icon: '↓' },
-    passive_destock: { color: '#10b981', icon: '↑' },
-    active_restock: { color: '#4f8cff', icon: '↑' },
-    passive_restock: { color: '#f59e0b', icon: '↓' },
+    active_destock: { color: '#FF4D4F', icon: '↓' },
+    passive_destock: { color: '#00C86E', icon: '↑' },
+    active_restock: { color: '#0064FF', icon: '↑' },
+    passive_restock: { color: '#FAAD14', icon: '↓' },
   };
   const pc = phaseConfig[cycle.phase] || phaseConfig.active_destock;
 
@@ -449,7 +469,7 @@ const InventoryDetail: React.FC = () => {
     <div>
       <Row gutter={GAP}>
         {dimensions.map((dim) => {
-          const color = dimensionColors[dim.key] || '#f59e0b';
+          const color = dimensionColors[dim.key] || '#FAAD14';
           return (
             <Col xs={12} md={6} key={dim.key}>
               <div style={{ padding: '16px 18px', borderRadius: 10, border: `1px solid ${color}20`, background: `${color}06` }}>
@@ -461,13 +481,13 @@ const InventoryDetail: React.FC = () => {
                 <div style={{ display: 'flex', gap: 14 }}>
                   <div>
                     <span style={{ fontSize: 10, color: TEXT.secondary }}>环比</span>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: dim.momChange >= 0 ? '#ef4444' : '#10b981', marginTop: 2 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: dim.momChange >= 0 ? '#FF4D4F' : '#00C86E', marginTop: 2 }}>
                       {dim.momChange >= 0 ? '+' : ''}{dim.momChange}%
                     </div>
                   </div>
                   <div>
                     <span style={{ fontSize: 10, color: TEXT.secondary }}>周环比</span>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: dim.wowChange >= 0 ? '#ef4444' : '#10b981', marginTop: 2 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: dim.wowChange >= 0 ? '#FF4D4F' : '#00C86E', marginTop: 2 }}>
                       {dim.wowChange >= 0 ? '+' : ''}{dim.wowChange}%
                     </div>
                   </div>
@@ -477,13 +497,13 @@ const InventoryDetail: React.FC = () => {
           );
         })}
       </Row>
-      <div style={{ marginTop: GAP, padding: '16px 20px', borderRadius: 10, border: `1px solid ${pc.color}22`, background: `rgba(245,158,11,0.04)` }}>
+      <div style={{ marginTop: GAP, padding: '16px 20px', borderRadius: 10, border: `1px solid ${pc.color}22`, background: 'rgba(250,173,20,0.04)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
               <span style={{ fontSize: 20, fontWeight: 700, color: pc.color }}>{pc.icon}</span>
               <span style={{ fontSize: 15, fontWeight: 600, color: TEXT.primary }}>库存周期：{cycle.phaseLabel}</span>
-              <Tag style={{ background: cycle.signal === 'bullish' ? 'rgba(16,185,129,0.12)' : cycle.signal === 'bearish' ? 'rgba(239,68,68,0.12)' : 'rgba(79,140,255,0.12)', color: cycle.signal === 'bullish' ? '#10b981' : cycle.signal === 'bearish' ? '#ef4444' : '#4f8cff', margin: 0 }}>
+              <Tag style={{ background: cycle.signal === 'bullish' ? 'rgba(255,77,79,0.12)' : cycle.signal === 'bearish' ? 'rgba(0,200,110,0.12)' : 'rgba(0,100,255,0.12)', color: cycle.signal === 'bullish' ? '#FF4D4F' : cycle.signal === 'bearish' ? '#00C86E' : '#0064FF', margin: 0 }}>
                 {cycle.signal === 'bullish' ? '利多' : cycle.signal === 'bearish' ? '利空' : '中性'}
               </Tag>
             </div>
@@ -499,13 +519,82 @@ const InventoryDetail: React.FC = () => {
         <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>库存趋势</div>
         <ReactECharts option={trendOption} style={{ height: 300 }} />
       </div>
+
+      {/* 库存数据明细 */}
+      <div style={{ marginTop: GAP }}>
+        <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>数据明细</div>
+        <Table
+          size="small"
+          pagination={false}
+          dataSource={trend.slice().reverse().map((row, i) => ({ ...row, key: row.month }))}
+          columns={[
+            { title: '日期', dataIndex: 'month', key: 'month', width: 100, render: (v: string) => <span style={{ fontWeight: 600, color: TEXT.primary, fontFamily: 'monospace' }}>{v}</span> },
+            {
+              title: '工厂库存', dataIndex: 'factory', key: 'factory', width: 120,
+              render: (v: number, _: typeof trend[0], idx: number) => {
+                const next = trend.slice().reverse()[idx + 1];
+                const diff = next ? v - next.factory : 0;
+                return (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span>
+                    {next && <span style={{ fontSize: 11, color: diff >= 0 ? '#FF4D4F' : '#00C86E', fontWeight: 600 }}>{diff >= 0 ? '+' : ''}{diff.toLocaleString()}</span>}
+                  </div>
+                );
+              },
+            },
+            {
+              title: '市场库存', dataIndex: 'market', key: 'market', width: 120,
+              render: (v: number, _: typeof trend[0], idx: number) => {
+                const next = trend.slice().reverse()[idx + 1];
+                const diff = next ? v - next.market : 0;
+                return (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span>
+                    {next && <span style={{ fontSize: 11, color: diff >= 0 ? '#FF4D4F' : '#00C86E', fontWeight: 600 }}>{diff >= 0 ? '+' : ''}{diff.toLocaleString()}</span>}
+                  </div>
+                );
+              },
+            },
+            {
+              title: '期货库存', dataIndex: 'futures', key: 'futures', width: 120,
+              render: (v: number, _: typeof trend[0], idx: number) => {
+                const next = trend.slice().reverse()[idx + 1];
+                const diff = next ? v - next.futures : 0;
+                return (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span>
+                    {next && <span style={{ fontSize: 11, color: diff >= 0 ? '#FF4D4F' : '#00C86E', fontWeight: 600 }}>{diff >= 0 ? '+' : ''}{diff.toLocaleString()}</span>}
+                  </div>
+                );
+              },
+            },
+            {
+              title: '行业总库存', dataIndex: 'total', key: 'total', width: 130,
+              render: (v: number, _: typeof trend[0], idx: number) => {
+                const next = trend.slice().reverse()[idx + 1];
+                const diff = next ? v - next.total : 0;
+                return (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontWeight: 700, color: TEXT.primary }}>{v.toLocaleString()}</span>
+                    {next && <span style={{ fontSize: 11, color: diff >= 0 ? '#FF4D4F' : '#00C86E', fontWeight: 600 }}>{diff >= 0 ? '+' : ''}{diff.toLocaleString()}</span>}
+                  </div>
+                );
+              },
+            },
+            {
+              title: '环比', dataIndex: 'changeRate', key: 'changeRate', width: 80,
+              render: (v: number) => <span style={{ fontWeight: 600, color: v >= 0 ? '#FF4D4F' : '#00C86E' }}>{v >= 0 ? '+' : ''}{v}%</span>,
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 };
 
-// ────────────── 宏观详情面板 ──────────────
+// ────────────── 宏观和政策详情面板 ──────────────
 const MacroDetail: React.FC = () => {
-  const { radar, indicators, priceCorrelation, loading, fetchAll } = useMacroStore();
+  const { radar, indicators, breakingNews, loading, fetchAll } = useMacroStore();
 
   useEffect(() => { if (!radar.length) fetchAll(); }, []);
 
@@ -515,48 +604,55 @@ const MacroDetail: React.FC = () => {
       indicator: radar.map((d) => ({ name: d.dimension, max: 100 })),
       shape: 'circle' as const,
       splitNumber: 4,
-      axisName: { color: '#8892b0', fontSize: 11 },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } },
-      splitArea: { areaStyle: { color: ['rgba(16,185,129,0.02)', 'rgba(16,185,129,0.04)', 'rgba(16,185,129,0.02)', 'rgba(16,185,129,0.04)'] } },
-      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+      axisName: { color: '#8C8C8C', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#F0F0F0' } },
+      splitArea: { areaStyle: { color: ['rgba(0,200,110,0.02)', 'rgba(0,200,110,0.04)', 'rgba(0,200,110,0.02)', 'rgba(0,200,110,0.04)'] } },
+      axisLine: { lineStyle: { color: '#E8E8E8' } },
     },
     series: [{
       type: 'radar',
       data: [{
         value: radar.map((d) => d.score),
         name: '当前状态',
-        areaStyle: { color: 'rgba(16,185,129,0.15)' },
-        lineStyle: { color: '#10b981', width: 2, shadowColor: '#10b981', shadowBlur: 4 },
-        itemStyle: { color: '#10b981' },
+        areaStyle: { color: 'rgba(0,200,110,0.15)' },
+        lineStyle: { color: '#00C86E', width: 2 },
+        itemStyle: { color: '#00C86E' },
       }],
     }],
   }), [radar]);
 
-  const correlationOption = useMemo(() => ({
-    tooltip: CHART_TOOLTIP,
-    legend: { ...CHART_LEGEND, data: ['碳酸锂价格', '美元指数'] },
-    grid: { top: 40, right: 60, bottom: 30, left: 70 },
-    xAxis: { type: 'category', data: priceCorrelation.map((d) => d.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
-    yAxis: [
-      { type: 'value', name: '价格(元/吨)', nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      { type: 'value', name: '美元指数', position: 'right' as const, nameTextStyle: { color: '#8892b0', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
-    ],
-    series: [
-      { name: '碳酸锂价格', type: 'line', data: priceCorrelation.map((d) => d.liPrice), smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#4f8cff', width: 2, shadowColor: '#4f8cff', shadowBlur: 4 }, itemStyle: { color: '#4f8cff' } },
-      { name: '美元指数', type: 'line', yAxisIndex: 1, data: priceCorrelation.map((d) => d.macroValue), smooth: true, symbol: 'diamond', symbolSize: 5, lineStyle: { color: '#ef4444', width: 2, shadowColor: '#ef4444', shadowBlur: 4 }, itemStyle: { color: '#ef4444' } },
-    ],
-  }), [priceCorrelation]);
-
   if (loading) return <PageLoading />;
 
-  const impactMap: Record<string, { label: string; color: string; bg: string }> = {
-    positive: { label: '利多', color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
-    negative: { label: '利空', color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
-    neutral: { label: '中性', color: '#4f8cff', bg: 'rgba(79,140,255,0.12)' },
+  const impactMapLocal: Record<string, { label: string; color: string; bg: string }> = {
+    positive: { label: '利多', color: '#FF4D4F', bg: 'rgba(255,77,79,0.12)' },
+    negative: { label: '利空', color: '#00C86E', bg: 'rgba(0,200,110,0.12)' },
+    neutral: { label: '中性', color: '#0064FF', bg: 'rgba(0,100,255,0.12)' },
+  };
+
+  const directionConfig: Record<string, { label: string; color: string; bg: string }> = {
+    bullish: { label: '利多', color: '#FF4D4F', bg: 'rgba(255,77,79,0.10)' },
+    bearish: { label: '利空', color: '#00C86E', bg: 'rgba(0,200,110,0.10)' },
+    neutral: { label: '中性', color: '#0064FF', bg: 'rgba(0,100,255,0.10)' },
+  };
+
+  const importanceConfig: Record<string, { label: string; color: string }> = {
+    high: { label: '高影响', color: '#FF4D4F' },
+    medium: { label: '中影响', color: '#FAAD14' },
+    low: { label: '低影响', color: '#8C8C8C' },
+  };
+
+  const formatTime = (iso: string) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const hours = Math.floor(diff / 3600000);
+    if (hours < 1) return '刚刚';
+    if (hours < 24) return `${hours}小时前`;
+    const days = Math.floor(hours / 24);
+    return `${days}天前`;
   };
 
   return (
     <div>
+      {/* ── 宏观因素 ── */}
       <Row gutter={GAP}>
         <Col xs={24} lg={10}>
           <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>宏观因子雷达</div>
@@ -566,9 +662,9 @@ const MacroDetail: React.FC = () => {
           <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>关键宏观指标</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 }}>
             {indicators.map((ind) => {
-              const imp = impactMap[ind.impact] || impactMap.neutral;
+              const imp = impactMapLocal[ind.impact] || impactMapLocal.neutral;
               return (
-                <div key={ind.key} style={{ padding: '12px 14px', borderRadius: 8, border: '1px solid rgba(16,185,129,0.1)', background: 'rgba(16,185,129,0.03)' }}>
+                <div key={ind.key} style={{ padding: '12px 14px', borderRadius: 8, border: '1px solid #F0F0F0', background: '#FAFAFA' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                     <span style={{ fontSize: 11, color: TEXT.secondary }}>{ind.name}</span>
                     <Tag style={{ fontSize: 9, margin: 0, lineHeight: '14px', padding: '0 4px', background: imp.bg, color: imp.color }}>{imp.label}</Tag>
@@ -577,7 +673,7 @@ const MacroDetail: React.FC = () => {
                     <span style={{ fontSize: 18, fontWeight: 700, color: TEXT.primary }}>{ind.value}</span>
                     <span style={{ fontSize: 10, color: TEXT.secondary }}>{ind.unit}</span>
                     {ind.change !== 0 && (
-                      <span style={{ fontSize: 11, fontWeight: 600, color: ind.change >= 0 ? '#ef4444' : '#10b981', marginLeft: 4 }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: ind.change >= 0 ? '#FF4D4F' : '#00C86E', marginLeft: 4 }}>
                         {ind.change >= 0 ? '+' : ''}{ind.change}
                       </span>
                     )}
@@ -588,9 +684,56 @@ const MacroDetail: React.FC = () => {
           </div>
         </Col>
       </Row>
-      <div style={{ marginTop: GAP }}>
-        <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>碳酸锂价格 vs 美元指数</div>
-        <ReactECharts option={correlationOption} style={{ height: 300 }} />
+
+      {/* ── 政策与行业新闻 ── */}
+      <div style={{ marginTop: GAP * 2, borderTop: '1px solid #F0F0F0', paddingTop: GAP }}>
+        <div style={{ fontSize: 11, color: TEXT.secondary, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1 }}>
+          产业链政策与行业动态
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {breakingNews.map((news) => {
+            const dir = directionConfig[news.direction] || directionConfig.neutral;
+            const imp = importanceConfig[news.impact] || importanceConfig.low;
+            return (
+              <div key={news.id} style={{
+                padding: '14px 18px',
+                borderRadius: 10,
+                border: '1px solid #F0F0F0',
+                background: '#FAFAFA',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+                  <div style={{ flex: 1, marginRight: 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: TEXT.primary, lineHeight: 1.4 }}>{news.title}</span>
+                    </div>
+                    <div style={{ fontSize: 12, color: TEXT.secondary, lineHeight: 1.6 }}>{news.summary}</div>
+                  </div>
+                  <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+                    <Tag style={{ margin: 0, fontSize: 10, lineHeight: '16px', padding: '0 6px', background: dir.bg, color: dir.color, borderRadius: 4 }}>
+                      {dir.label}
+                    </Tag>
+                    <Tag style={{ margin: 0, fontSize: 10, lineHeight: '16px', padding: '0 6px', background: `${imp.color}12`, color: imp.color, borderRadius: 4 }}>
+                      {imp.label}
+                    </Tag>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                    {news.tags.map((tag) => (
+                      <Tag key={tag} style={{ margin: 0, fontSize: 10, lineHeight: '16px', padding: '0 5px', background: '#F0F0F0', color: TEXT.secondary, borderRadius: 3, border: 'none' }}>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                    <span style={{ fontSize: 11, color: TEXT.muted }}>{news.source}</span>
+                    <span style={{ fontSize: 11, color: TEXT.muted }}>{formatTime(news.time)}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -650,7 +793,7 @@ const Dashboard: React.FC = () => {
     },
     macro: {
       main: `${indicators.macroScore}`,
-      sub: `DXY ${indicators.dollarIndex} · PMI ${indicators.chinaPMI}`,
+      sub: `DXY ${indicators.dollarIndex} · PMI ${indicators.chinaPMI} · 政策 ${judgment.signals.length > 4 ? '活跃' : '平稳'}`,
     },
   };
 
@@ -667,7 +810,7 @@ const Dashboard: React.FC = () => {
       ) : (
         <div style={{
           ...CARD, borderRadius: 16,
-          background: `linear-gradient(135deg, ${overallCfg.color}08 0%, rgba(255,255,255,0.04) 50%, ${overallCfg.color}05 100%)`,
+          background: `linear-gradient(135deg, ${overallCfg.color}08 0%, #FFFFFF 50%, ${overallCfg.color}05 100%)`,
           border: `1px solid ${overallCfg.color}20`,
         }}>
           <div style={GLASS_HIGHLIGHT} />
@@ -702,8 +845,8 @@ const Dashboard: React.FC = () => {
               <div style={{
                 flexShrink: 0, textAlign: 'right',
                 padding: '10px 18px', borderRadius: 10,
-                border: '1px solid rgba(255,255,255,0.06)',
-                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid #E8E8E8',
+                background: '#FAFAFA',
               }}>
                 <div style={{ fontSize: 10, color: TEXT.secondary, marginBottom: 4 }}>碳酸锂现价</div>
                 <div style={{ fontSize: 26, fontWeight: 700, color: TEXT.primary, lineHeight: 1 }}>
@@ -733,8 +876,8 @@ const Dashboard: React.FC = () => {
                   borderRadius: 14,
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
-                  border: isActive ? `1px solid ${cfg.color}50` : `1px solid rgba(255,255,255,0.08)`,
-                  background: isActive ? `linear-gradient(180deg, ${cfg.color}12 0%, rgba(255,255,255,0.04) 100%)` : 'rgba(255,255,255,0.04)',
+                  border: isActive ? `1px solid ${cfg.color}50` : '1px solid #E8E8E8',
+                  background: isActive ? `linear-gradient(180deg, ${cfg.color}12 0%, #FFFFFF 100%)` : '#FFFFFF',
                   boxShadow: isActive ? `0 4px 24px ${cfg.color}15` : 'none',
                 }}
               >
@@ -761,7 +904,7 @@ const Dashboard: React.FC = () => {
                     <span style={{
                       fontSize: 28, fontWeight: 700,
                       color: sigCfg.color,
-                      textShadow: `0 0 12px ${sigCfg.color}25`,
+                      textShadow: `0 0 12px ${sigCfg.color}15`,
                     }}>
                       {val.main}
                     </span>
@@ -772,7 +915,7 @@ const Dashboard: React.FC = () => {
                       <span style={{ fontSize: 10, color: TEXT.secondary }}>信号强度</span>
                       <span style={{ fontSize: 10, color: TEXT.secondary }}>{Math.round(sig.strength)}%</span>
                     </div>
-                    <div style={{ height: 3, background: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ height: 3, background: '#F0F0F0', borderRadius: 2, overflow: 'hidden' }}>
                       <div style={{
                         width: `${sig.strength}%`, height: '100%', borderRadius: 2,
                         background: `linear-gradient(90deg, ${sigCfg.color}, ${sigCfg.color}88)`,

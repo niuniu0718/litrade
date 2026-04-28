@@ -107,9 +107,11 @@ export function generateEnergyStorage(): EnergyStorageData[] {
     const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
     const installation = Math.round((base + randomBetween(-1, 2)) * 10) / 10;
+    const catlInstallation = Math.round(installation * randomBetween(0.28, 0.38) * 10) / 10;
     data.push({
       month: label,
       installation,
+      catlInstallation,
       yoyChange: Math.round(randomBetween(30, 55) * 10) / 10,
     });
 

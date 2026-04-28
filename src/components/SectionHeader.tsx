@@ -12,7 +12,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, extra }) => (
     alignItems: 'center',
     marginBottom: 16,
   }}>
-    <span style={{ fontSize: 15, fontWeight: 600, color: '#1a1a2e' }}>{title}</span>
+    <span style={{ fontSize: 15, fontWeight: 600, color: '#1F1F1F' }}>{title}</span>
     {extra}
   </div>
 );

@@ -8,9 +8,9 @@ interface Props {
 }
 
 const deviationColor = (level: 'normal' | 'medium' | 'heavy') => {
-  if (level === 'normal') return '#10b981';
-  if (level === 'medium') return '#f59e0b';
-  return '#ef4444';
+  if (level === 'normal') return '#00C86E';
+  if (level === 'medium') return '#FAAD14';
+  return '#FF4D4F';
 };
 
 const deviationLabel = (level: 'normal' | 'medium' | 'heavy') => {
@@ -26,8 +26,8 @@ const YesterdayReview: React.FC<Props> = ({ review }) => {
     <div style={{
       padding: '14px 18px',
       borderRadius: 10,
-      border: '1px solid rgba(255,255,255,0.06)',
-      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(0,0,0,0.06)',
+      background: 'rgba(0,0,0,0.03)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
         <span style={{ fontSize: 13, fontWeight: 600, color: TEXT.secondary }}>昨日复盘</span>
@@ -69,7 +69,7 @@ const YesterdayReview: React.FC<Props> = ({ review }) => {
           {review.correctedFactors.length > 0 && (
             <div style={{ display: 'flex', gap: 6, marginTop: 6, flexWrap: 'wrap' }}>
               {review.correctedFactors.map(f => (
-                <Tag key={f} style={{ margin: 0, fontSize: 10, background: 'rgba(79,140,255,0.1)', color: '#4f8cff', borderRadius: 4 }}>
+                <Tag key={f} style={{ margin: 0, fontSize: 10, background: 'rgba(0,100,255,0.08)', color: '#0064FF', borderRadius: 4 }}>
                   {f}
                 </Tag>
               ))}

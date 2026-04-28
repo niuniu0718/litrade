@@ -1,49 +1,40 @@
 import { create } from 'zustand';
-import type { ScenarioParams, ScenarioResult, SupplyDemandSheet, HistoricalScenario } from '../types/scenario';
+import type { HistoricalEvent, CycleAnalysis } from '../types/scenario';
 import * as api from '../services/scenarioService';
 
 interface ScenarioState {
-  params: ScenarioParams;
-  results: ScenarioResult[];
-  sheet: SupplyDemandSheet[];
-  historical: HistoricalScenario[];
+  events: HistoricalEvent[];
+  priceTimeline: { date: string; price: number }[];
+  cycleAnalysis: CycleAnalysis | null;
+  selectedEventId: string | null;
   loading: boolean;
   fetchAll: () => Promise<void>;
-  updateParams: (params: Partial<ScenarioParams>) => Promise<void>;
+  selectEvent: (id: string | null) => void;
 }
 
-export const useScenarioStore = create<ScenarioState>((set, get) => ({
-  params: {
-    evGrowthRate: 20,
-    storageGrowthRate: 30,
-    supplyChange: 5,
-    macroEnvironment: 40,
-  },
-  results: [],
-  sheet: [],
-  historical: [],
+export const useScenarioStore = create<ScenarioState>((set) => ({
+  events: [],
+  priceTimeline: [],
+  cycleAnalysis: null,
+  selectedEventId: null,
   loading: false,
 
   fetchAll: async () => {
     set({ loading: true });
-    const { params } = get();
-    const [defaultParams, results, sheet, historical] = await Promise.all([
-      api.fetchDefaultParams(),
-      api.fetchScenarioResults(params),
-      api.fetchSupplyDemandSheet(params),
-      api.fetchHistoricalScenarios(),
-    ]);
-    set({ params: defaultParams, results, sheet, historical, loading: false });
+    try {
+      const [events, priceTimeline] = await Promise.all([
+        api.fetchHistoricalEvents(),
+        api.fetchPriceTimeline(),
+      ]);
+      const cycleAnalysis = await api.fetchCycleAnalysis(events);
+      set({ events, priceTimeline, cycleAnalysis, loading: false });
+    } catch (e) {
+      console.error('scenarioStore.fetchAll failed:', e);
+      set({ loading: false });
+    }
   },
 
-  updateParams: async (partial) => {
-    const { params } = get();
-    const newParams = { ...params, ...partial };
-    set({ loading: true });
-    const [results, sheet] = await Promise.all([
-      api.fetchScenarioResults(newParams),
-      api.fetchSupplyDemandSheet(newParams),
-    ]);
-    set({ params: newParams, results, sheet, loading: false });
+  selectEvent: (id) => {
+    set({ selectedEventId: id });
   },
 }));

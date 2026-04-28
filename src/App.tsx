@@ -1,50 +1,44 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import AppLayout from './components/AppLayout';
 import Dashboard from './pages/Dashboard';
-import ChartDetail from './pages/ChartDetail';
 import PriceManagement from './pages/PriceManagement';
-import SupplyDemand from './pages/SupplyDemand';
 import CompanyAnalysis from './pages/CompanyAnalysis';
 import CostAnalysis from './pages/CostAnalysis';
 import TradeData from './pages/TradeData';
 import Settings from './pages/Settings';
-import DemandAnalysis from './pages/DemandAnalysis';
-import InventoryAnalysis from './pages/InventoryAnalysis';
-import MacroFactors from './pages/MacroFactors';
 import ScenarioAnalysis from './pages/ScenarioAnalysis';
 
-const darkTheme = {
+const catlTheme = {
   token: {
-    colorPrimary: '#4f8cff',
-    colorBgContainer: 'transparent',
-    colorBgElevated: 'rgba(10,14,39,0.95)',
-    colorBgLayout: '#0a0e27',
-    colorText: '#f0f0f0',
-    colorTextSecondary: '#8892b0',
-    colorBorder: 'rgba(255,255,255,0.08)',
-    colorBorderSecondary: 'rgba(255,255,255,0.04)',
+    colorPrimary: '#0064FF',
+    colorBgContainer: '#FFFFFF',
+    colorBgElevated: '#FFFFFF',
+    colorBgLayout: '#F5F7FA',
+    colorText: '#1F1F1F',
+    colorTextSecondary: '#8C8C8C',
+    colorBorder: '#E8E8E8',
+    colorBorderSecondary: '#F0F0F0',
+    colorSuccess: '#00C86E',
+    colorWarning: '#FAAD14',
+    colorError: '#FF4D4F',
+    colorInfo: '#0064FF',
     borderRadius: 8,
-    fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif",
   },
-  algorithm: theme.darkAlgorithm,
 };
 
 function App() {
   return (
-    <ConfigProvider theme={darkTheme} locale={zhCN}>
+    <ConfigProvider theme={catlTheme} locale={zhCN}>
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/demand" element={<DemandAnalysis />} />
-            <Route path="/supply-demand" element={<SupplyDemand />} />
-            <Route path="/inventory" element={<InventoryAnalysis />} />
-            <Route path="/macro" element={<MacroFactors />} />
             <Route path="/price" element={<PriceManagement />} />
-            <Route path="/chart" element={<ChartDetail />} />
+            <Route path="/chart" element={<Navigate to="/price" replace />} />
             <Route path="/company" element={<CompanyAnalysis />} />
             <Route path="/cost" element={<CostAnalysis />} />
             <Route path="/trade" element={<TradeData />} />

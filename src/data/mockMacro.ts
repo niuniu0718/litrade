@@ -8,6 +8,7 @@ import type {
   CapitalFlow,
   QualitativeIndicator,
   MarketSentiment,
+  BreakingNews,
 } from '../types/macro';
 
 function randomBetween(min: number, max: number): number {
@@ -84,7 +85,7 @@ export function generateMacroIndicators(): MacroIndicator[] {
 
 export function generateMacroPriceCorrelation(): MacroPriceCorrelation[] {
   const data: MacroPriceCorrelation[] = [];
-  let liPrice = 75000;
+  let liPrice = 174000;
   let macroBase = 103;
 
   for (let i = 11; i >= 0; i--) {
@@ -210,4 +211,132 @@ export function generateMarketSentiment(): MarketSentiment {
     newsCount24h: 156,
     sentimentScore: -15,
   };
+}
+
+export function generateBreakingNews(): BreakingNews[] {
+  const now = dayjs();
+  const news: Omit<BreakingNews, 'id'>[] = [
+    {
+      title: '红海航运中断加剧，锂盐运输成本攀升',
+      source: '路透社',
+      time: now.subtract(2, 'hour').toISOString(),
+      summary: '胡塞武装持续袭击红海商船，导致亚欧航线运费上涨40%以上。锂盐从亚洲出口至欧洲的运输周期延长2-3周，短期推升欧洲锂盐现货溢价。',
+      impact: 'high',
+      direction: 'bullish',
+      tags: ['地缘政治', '航运', '成本'],
+      region: '中东',
+    },
+    {
+      title: '津巴布韦宣布锂精矿出口禁令，即刻生效',
+      source: '彭博社',
+      time: now.subtract(5, 'hour').toISOString(),
+      summary: '津巴布韦政府宣布即日起禁止未加工锂精矿出口，要求矿企在当地建设加工厂。该国锂矿产量占全球供应约3%，短期内将收紧锂精矿供给。',
+      impact: 'high',
+      direction: 'bullish',
+      tags: ['非洲', '出口禁令', '锂精矿'],
+      region: '非洲',
+    },
+    {
+      title: '智利国有化锂资源战略持续推进，新法案提交国会',
+      source: 'Financial Times',
+      time: now.subtract(8, 'hour').toISOString(),
+      summary: '智利政府向国会提交锂资源国家战略法案，要求未来所有新锂矿项目必须由国家控股51%以上。现有项目将在许可证到期后重新谈判。市场担忧全球最大锂生产国供给收紧。',
+      impact: 'high',
+      direction: 'bullish',
+      tags: ['南美', '国有化', '锂资源'],
+      region: '南美',
+    },
+    {
+      title: '印尼调整镍锂出口关税，锂产品关税上调5%',
+      source: '亚洲金属网',
+      time: now.subtract(12, 'hour').toISOString(),
+      summary: '印尼财政部宣布上调锂相关产品出口关税5个百分点，涉及氢氧化锂、碳酸锂等深加工产品。印尼作为全球镍资源大国，其政策调整将间接影响锂电池供应链成本。',
+      impact: 'medium',
+      direction: 'bearish',
+      tags: ['东南亚', '关税', '出口政策'],
+      region: '东南亚',
+    },
+    {
+      title: '中国新能源下乡补贴加码，储能配储要求提至20%',
+      source: '中国证券报',
+      time: now.subtract(16, 'hour').toISOString(),
+      summary: '国务院常务会议决定加大新能源汽车下乡补贴力度，同时将新能源电站储能配储比例要求从15%提升至20%。预计拉动储能装机需求约25GWh/年，利好锂电需求。',
+      impact: 'high',
+      direction: 'bullish',
+      tags: ['中国政策', '储能', '补贴'],
+      region: '中国',
+    },
+    {
+      title: 'Core Lithium暂停澳洲Finniss锂矿项目运营',
+      source: '澳大利亚矿业评论',
+      time: now.subtract(20, 'hour').toISOString(),
+      summary: '澳洲矿企Core Lithium宣布暂停Finniss锂矿项目开采作业，因锂精矿价格持续低于运营成本。这是继Pilbara减产后又一澳洲矿企削减产量，全球供给端进一步收缩。',
+      impact: 'medium',
+      direction: 'bullish',
+      tags: ['澳洲', '减产', '锂矿'],
+      region: '澳洲',
+    },
+    {
+      title: '欧洲电池法案正式实施，碳足迹披露要求收紧',
+      source: 'Euractiv',
+      time: now.subtract(28, 'hour').toISOString(),
+      summary: '欧盟新电池法规正式进入碳足迹披露强制阶段，要求所有在欧销售的动力电池提供全生命周期碳足迹数据。中国电池企业面临额外合规成本，短期内影响出口利润率。',
+      impact: 'medium',
+      direction: 'bearish',
+      tags: ['欧洲', '碳足迹', '合规'],
+      region: '欧洲',
+    },
+    {
+      title: '中欧电动车反补贴调查结果出炉，加征关税幅度低于预期',
+      source: '新华社',
+      time: now.subtract(36, 'hour').toISOString(),
+      summary: '欧盟对中国电动车反补贴调查最终裁定加征关税，幅度在10%-20%之间，低于此前市场预期的25%-35%。中国电动车出口影响有限，锂电需求维持稳健增长预期。',
+      impact: 'low',
+      direction: 'neutral',
+      tags: ['贸易摩擦', '电动车', '关税'],
+      region: '全球',
+    },
+    {
+      title: '阿根廷锂三角地区遭遇严重干旱，盐湖提锂产能受影响',
+      source: 'SMM上海有色网',
+      time: now.subtract(44, 'hour').toISOString(),
+      summary: '阿根廷北部锂三角地区连续三个月降水量不足历史均值30%，多家盐湖提锂企业反映卤水浓度下降，产能利用率降至70%左右。预计影响锂盐产量约5000吨LCE/月。',
+      impact: 'medium',
+      direction: 'bullish',
+      tags: ['南美', '盐湖', '气候'],
+      region: '南美',
+    },
+    {
+      title: '宁德时代发布神行超充电池，锂消耗量提升15%',
+      source: '高工锂电',
+      time: now.subtract(52, 'hour').toISOString(),
+      summary: '宁德时代发布新一代神行超充电池，采用磷酸铁锂高锰路线，单位容量锂消耗较传统LFP电池提升约15%。若大规模量产将增加锂需求约2万吨LCE/年。',
+      impact: 'medium',
+      direction: 'bullish',
+      tags: ['电池技术', '宁德时代', '需求'],
+      region: '中国',
+    },
+    {
+      title: '全球锂矿并购活跃，多家企业争夺非洲锂资源',
+      source: '矿业周刊',
+      time: now.subtract(60, 'hour').toISOString(),
+      summary: '天齐锂业、赣锋锂业等多家中国锂企加速布局非洲锂矿资源，近期在马里、加纳等地签署多项收购协议。非洲锂矿开发进入加速期，但政治风险和基础设施瓶颈仍是主要挑战。',
+      impact: 'low',
+      direction: 'neutral',
+      tags: ['非洲', '并购', '产能'],
+      region: '非洲',
+    },
+    {
+      title: '日本固态电池突破性进展，商业化时间表提前至2027年',
+      source: '日经亚洲',
+      time: now.subtract(68, 'hour').toISOString(),
+      summary: '丰田与松下联合宣布固态电池原型通过耐久性测试，能量密度达500Wh/kg，计划2027年量产。固态电池对锂的需求结构将发生变化，但短期内对传统锂电市场影响有限。',
+      impact: 'low',
+      direction: 'neutral',
+      tags: ['技术突破', '固态电池', '日本'],
+      region: '全球',
+    },
+  ];
+
+  return news.map((n, i) => ({ ...n, id: `news-${i}` }));
 }

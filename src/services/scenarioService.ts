@@ -1,23 +1,18 @@
 import {
-  generateDefaultParams,
-  generateScenarioResults,
-  generateSupplyDemandSheet,
-  generateHistoricalScenarios,
+  generateHistoricalEvents,
+  generatePriceTimeline,
+  generateCycleAnalysis,
 } from '../data/mockScenario';
-import type { ScenarioParams, ScenarioResult, SupplyDemandSheet, HistoricalScenario } from '../types/scenario';
+import type { HistoricalEvent, CycleAnalysis } from '../types/scenario';
 
-export async function fetchDefaultParams(): Promise<ScenarioParams> {
-  return generateDefaultParams();
+export async function fetchHistoricalEvents(): Promise<HistoricalEvent[]> {
+  return generateHistoricalEvents();
 }
 
-export async function fetchScenarioResults(params: ScenarioParams): Promise<ScenarioResult[]> {
-  return generateScenarioResults(params);
+export async function fetchPriceTimeline(): Promise<{ date: string; price: number }[]> {
+  return generatePriceTimeline();
 }
 
-export async function fetchSupplyDemandSheet(params: ScenarioParams): Promise<SupplyDemandSheet[]> {
-  return generateSupplyDemandSheet(params);
-}
-
-export async function fetchHistoricalScenarios(): Promise<HistoricalScenario[]> {
-  return generateHistoricalScenarios();
+export async function fetchCycleAnalysis(events: HistoricalEvent[]): Promise<CycleAnalysis> {
+  return generateCycleAnalysis(events);
 }

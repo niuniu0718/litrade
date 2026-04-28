@@ -7,8 +7,9 @@ import {
   generateCapitalFlows,
   generateQualitativeIndicators,
   generateMarketSentiment,
+  generateBreakingNews,
 } from '../data/mockMacro';
-import type { MacroRadarData, MacroIndicator, MacroPriceCorrelation, MacroCalendarEvent, MarketReport, CapitalFlow, QualitativeIndicator, MarketSentiment } from '../types/macro';
+import type { MacroRadarData, MacroIndicator, MacroPriceCorrelation, MacroCalendarEvent, MarketReport, CapitalFlow, QualitativeIndicator, MarketSentiment, BreakingNews } from '../types/macro';
 
 export async function fetchMacroRadar(): Promise<MacroRadarData[]> {
   return generateMacroRadar();
@@ -42,4 +43,8 @@ export async function fetchQualitativeIndicators(): Promise<QualitativeIndicator
 
 export async function fetchMarketSentiment(): Promise<MarketSentiment> {
   return generateMarketSentiment();
+}
+
+export async function fetchBreakingNews(): Promise<BreakingNews[]> {
+  return generateBreakingNews();
 }

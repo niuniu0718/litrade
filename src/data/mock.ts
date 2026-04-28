@@ -53,10 +53,10 @@ interface ProductProfile {
 }
 
 const PROFILES: Record<ProductCode, ProductProfile> = {
-  li2co3_battery: { basePrice: 75000, volatility: 0.02 },
-  li2co3_industrial: { basePrice: 72000, volatility: 0.02 },
-  lioh: { basePrice: 68000, volatility: 0.022 },
-  spodumene: { basePrice: 850, volatility: 0.018 }, // 美元/吨
+  li2co3_battery: { basePrice: 174000, volatility: 0.02 },
+  li2co3_industrial: { basePrice: 168000, volatility: 0.02 },
+  lioh: { basePrice: 156000, volatility: 0.022 },
+  spodumene: { basePrice: 1950, volatility: 0.018 }, // 美元/吨
 };
 
 // ============ 生成行情数据 ============

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { MacroRadarData, MacroIndicator, MacroPriceCorrelation, MacroCalendarEvent, MarketReport, CapitalFlow, QualitativeIndicator, MarketSentiment } from '../types/macro';
+import type { MacroRadarData, MacroIndicator, MacroPriceCorrelation, MacroCalendarEvent, MarketReport, CapitalFlow, QualitativeIndicator, MarketSentiment, BreakingNews } from '../types/macro';
 import * as api from '../services/macroService';
 
 interface MacroState {
@@ -13,6 +13,7 @@ interface MacroState {
   capitalFlows: CapitalFlow[];
   qualitativeIndicators: QualitativeIndicator[];
   sentiment: MarketSentiment | null;
+  breakingNews: BreakingNews[];
   // 共享
   loading: boolean;
   fetchAll: () => Promise<void>;
@@ -27,11 +28,12 @@ export const useMacroStore = create<MacroState>((set) => ({
   capitalFlows: [],
   qualitativeIndicators: [],
   sentiment: null,
+  breakingNews: [],
   loading: false,
 
   fetchAll: async () => {
     set({ loading: true });
-    const [radar, indicators, priceCorrelation, calendar, reports, capitalFlows, qualitativeIndicators, sentiment] = await Promise.all([
+    const [radar, indicators, priceCorrelation, calendar, reports, capitalFlows, qualitativeIndicators, sentiment, breakingNews] = await Promise.all([
       api.fetchMacroRadar(),
       api.fetchMacroIndicators(),
       api.fetchMacroPriceCorrelation(),
@@ -40,7 +42,8 @@ export const useMacroStore = create<MacroState>((set) => ({
       api.fetchCapitalFlows(),
       api.fetchQualitativeIndicators(),
       api.fetchMarketSentiment(),
+      api.fetchBreakingNews(),
     ]);
-    set({ radar, indicators, priceCorrelation, calendar, reports, capitalFlows, qualitativeIndicators, sentiment, loading: false });
+    set({ radar, indicators, priceCorrelation, calendar, reports, capitalFlows, qualitativeIndicators, sentiment, breakingNews, loading: false });
   },
 }));

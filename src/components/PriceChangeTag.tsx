@@ -8,7 +8,7 @@ interface Props {
 
 const PriceChangeTag: React.FC<Props> = ({ value, percent = false }) => {
   const isUp = value > 0;
-  const color = isUp ? '#f5222d' : '#52c41a';
+  const color = isUp ? '#FF4D4F' : '#00C86E';
   const Icon = isUp ? CaretUpOutlined : CaretDownOutlined;
   const display = percent
     ? `${isUp ? '+' : ''}${value.toFixed(2)}%`

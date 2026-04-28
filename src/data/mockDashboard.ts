@@ -17,7 +17,7 @@ function randomBetween(min: number, max: number): number {
 /** 碳酸锂价格30日走势概览 */
 export function generatePriceOverview(): PriceOverview {
   const trend30d: number[] = [];
-  let price = 75000;
+  let price = 174000;
   for (let i = 0; i < 30; i++) {
     const change = price * 0.02 * (Math.random() - 0.48);
     price = Math.round((price + change) * 100) / 100;
@@ -35,9 +35,9 @@ export function generatePriceOverview(): PriceOverview {
 /** 三品种价格摘要 */
 export function generatePriceTrendSummaries(): PriceTrendSummary[] {
   const products = [
-    { product: 'li2co3_battery', name: '电池级碳酸锂', base: 75000, unit: '元/吨', volatility: 0.02 },
-    { product: 'lioh', name: '氢氧化锂', base: 68000, unit: '元/吨', volatility: 0.022 },
-    { product: 'spodumene', name: '锂精矿 SC6', base: 850, unit: '美元/吨', volatility: 0.018 },
+    { product: 'li2co3_battery', name: '电池级碳酸锂', base: 174000, unit: '元/吨', volatility: 0.02 },
+    { product: 'lioh', name: '氢氧化锂', base: 156000, unit: '元/吨', volatility: 0.022 },
+    { product: 'spodumene', name: '锂精矿 SC6', base: 1950, unit: '美元/吨', volatility: 0.018 },
   ];
 
   return products.map((p) => {
@@ -182,7 +182,7 @@ export function generatePriceJudgment(indicators: FrameworkIndicators): PriceJud
 export function generateDashboardMetrics(): DashboardMetrics {
   return {
     heatIndex: Math.round(randomBetween(35, 85)),
-    avgPriceLevel: Math.round(randomBetween(65000, 80000)),
+    avgPriceLevel: Math.round(randomBetween(160000, 185000)),
     alertCount: Math.round(randomBetween(2, 12)),
     monthlyVolume: Math.round(randomBetween(15000, 35000)),
     heatChange: randomBetween(-5, 8),
@@ -194,7 +194,7 @@ export function generateDashboardMetrics(): DashboardMetrics {
 /** 预警 */
 export function generateDashboardAlerts(count = 6): DashboardAlert[] {
   const templates: Omit<DashboardAlert, 'id' | 'timestamp'>[] = [
-    { level: 'critical', title: '碳酸锂价格跌破关键支撑位', description: '电池级碳酸锂价格跌破70000元/吨，市场情绪转向悲观', source: '价格监控' },
+    { level: 'critical', title: '碳酸锂价格跌破关键支撑位', description: '电池级碳酸锂价格跌破170000元/吨，市场情绪转向悲观', source: '价格监控' },
     { level: 'warning', title: '澳洲锂矿减产消息', description: 'Pilbara宣布调整生产计划，预计影响Q3产量约15%', source: '产业动态' },
     { level: 'info', title: '智利出口数据更新', description: '本月智利碳酸锂出口量环比增长12%，对中国出口占比提升', source: '进出口' },
     { level: 'warning', title: '库存持续上升', description: '社会库存连续3周增加，下游采购意愿偏弱', source: '库存监控' },

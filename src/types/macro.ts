@@ -75,3 +75,16 @@ export interface MarketSentiment {
   newsCount24h: number;
   sentimentScore: number;   // -100 to 100
 }
+
+/** 突发新闻/实时资讯 */
+export interface BreakingNews {
+  id: string;
+  title: string;           // 标题
+  source: string;          // 来源
+  time: string;            // 发布时间 ISO string
+  summary: string;         // 摘要
+  impact: 'high' | 'medium' | 'low';  // 对锂价影响程度
+  direction: 'bullish' | 'bearish' | 'neutral'; // 利多/利空/中性
+  tags: string[];          // 标签 如 ['地缘政治','非洲']
+  region: string;          // 影响区域 如 '全球','中东','非洲'
+}

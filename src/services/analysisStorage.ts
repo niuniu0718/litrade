@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import type { AnalysisHistory } from '../types/analysis';
 
 const STORAGE_KEY = 'litrade_analysis_history';
+const CACHE_VERSION = 'v2'; // bump when base prices change significantly
 const MAX_DAYS = 90;
 
 export function getTodayDateStr(): string {
@@ -14,7 +15,7 @@ export function getYesterdayDateStr(): string {
 
 export function loadAnalysisHistory(): AnalysisHistory | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY + '_' + CACHE_VERSION);
     if (!raw) return null;
     return JSON.parse(raw) as AnalysisHistory;
   } catch {
@@ -30,10 +31,10 @@ export function saveAnalysisHistory(history: AnalysisHistory): void {
   history.scoreTrend = history.scoreTrend.filter(t => t.date >= cutoff);
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    localStorage.setItem(STORAGE_KEY + '_' + CACHE_VERSION, JSON.stringify(history));
   } catch {
     // localStorage 满了，清除旧数据重试
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    localStorage.removeItem(STORAGE_KEY + '_' + CACHE_VERSION);
+    localStorage.setItem(STORAGE_KEY + '_' + CACHE_VERSION, JSON.stringify(history));
   }
 }

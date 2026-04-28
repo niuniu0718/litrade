@@ -1,61 +1,52 @@
-// 共享 ECharts 配置常量 — 暗色玻璃拟态主题
+// 共享 ECharts 配置常量 — CATL 设计规范
 
 export const CHART_TOOLTIP = {
   trigger: 'axis' as const,
-  backgroundColor: 'rgba(10,14,39,0.92)',
-  borderColor: 'rgba(255,255,255,0.1)',
+  backgroundColor: 'rgba(255,255,255,0.96)',
+  borderColor: '#E8E8E8',
   borderWidth: 1,
-  textStyle: { color: '#f0f0f0', fontSize: 13 },
-  axisPointer: { lineStyle: { color: 'rgba(79,140,255,0.3)' } },
+  textStyle: { color: '#1F1F1F', fontSize: 13 },
+  axisPointer: { lineStyle: { color: 'rgba(0,100,255,0.2)' } },
 };
 
 export const CHART_AXIS_LABEL = {
-  color: '#8892b0',
+  color: '#8C8C8C',
   fontSize: 11,
 };
 
 export const CHART_SPLIT_LINE = {
-  lineStyle: { color: 'rgba(255,255,255,0.04)' },
+  lineStyle: { color: '#F0F0F0' },
 };
 
 export const CHART_LEGEND = {
   top: 0,
   itemWidth: 16,
   itemHeight: 2,
-  textStyle: { fontSize: 12, color: '#8892b0' },
+  textStyle: { fontSize: 12, color: '#8C8C8C' },
 };
 
 export const COLORS = [
-  '#4f8cff',
-  '#a855f7',
-  '#f59e0b',
-  '#10b981',
-  '#ef4444',
-  '#00d4ff',
-  '#ec4899',
-  '#8b5cf6',
-  '#f97316',
-  '#14b8a6',
+  '#0064FF',
+  '#722ED1',
+  '#FAAD14',
+  '#00C86E',
+  '#FF4D4F',
+  '#13C2C2',
+  '#EB2F96',
+  '#2F54EB',
+  '#FA8C16',
+  '#52C41A',
 ];
 
 export const PRODUCT_COLORS: Record<string, string> = {
-  li2co3_battery: '#4f8cff',
-  li2co3_industrial: '#a855f7',
-  lioh: '#f59e0b',
-  spodumene: '#10b981',
+  li2co3_battery: '#0064FF',
+  li2co3_industrial: '#722ED1',
+  lioh: '#FAAD14',
+  spodumene: '#00C86E',
 };
 
-// 暗色背景图表通用背景色
 export const CHART_BG = 'transparent';
 
-// 发光线效果
-export function glowLine(color: string, width = 2) {
-  return {
-    lineStyle: { color, width, shadowColor: color, shadowBlur: 6 },
-  };
-}
-
-// 渐变面积填充
 export function gradientArea(color: string, opacity = 0.15) {
   return {
     color: {

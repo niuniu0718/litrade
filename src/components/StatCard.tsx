@@ -13,7 +13,7 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, unit, change, trend, prefix, suffix }) => {
   const isUp = change !== undefined && change >= 0;
-  const trendColor = change !== undefined ? (isUp ? '#f5222d' : '#52c41a') : '#0064ff';
+  const trendColor = change !== undefined ? (isUp ? '#FF4D4F' : '#00C86E') : '#0064FF';
 
   const sparkOption = trend && trend.length > 1 ? {
     grid: { top: 2, bottom: 2, left: 0, right: 0 },
@@ -30,7 +30,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, unit, change, trend, 
           type: 'linear' as const,
           x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: isUp ? 'rgba(245,34,45,0.12)' : 'rgba(82,196,26,0.12)' },
+            { offset: 0, color: isUp ? 'rgba(255,77,79,0.12)' : 'rgba(0,200,110,0.12)' },
             { offset: 1, color: 'rgba(255,255,255,0)' },
           ],
         },
@@ -58,13 +58,13 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, unit, change, trend, 
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <span style={{ fontSize: 13, color: '#6b7280', fontWeight: 500 }}>{title}</span>
+        <span style={{ fontSize: 13, color: '#8C8C8C', fontWeight: 500 }}>{title}</span>
         {change !== undefined && (
           <span style={{
             fontSize: 12,
             fontWeight: 600,
-            color: isUp ? '#f5222d' : '#52c41a',
-            background: isUp ? 'rgba(245,34,45,0.06)' : 'rgba(82,196,26,0.06)',
+            color: isUp ? '#FF4D4F' : '#00C86E',
+            background: isUp ? 'rgba(255,77,79,0.06)' : 'rgba(0,200,110,0.06)',
             padding: '2px 8px',
             borderRadius: 4,
           }}>
@@ -74,10 +74,10 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, unit, change, trend, 
       </div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
         {prefix}
-        <span style={{ fontSize: 26, fontWeight: 700, color: '#1a1a2e', letterSpacing: -0.5 }}>
+        <span style={{ fontSize: 26, fontWeight: 700, color: '#1F1F1F', letterSpacing: -0.5 }}>
           {typeof value === 'number' ? value.toLocaleString() : value}
         </span>
-        {unit && <span style={{ fontSize: 12, color: '#9ca3af' }}>{unit}</span>}
+        {unit && <span style={{ fontSize: 12, color: '#8C8C8C' }}>{unit}</span>}
         {suffix}
       </div>
       {sparkOption && (
