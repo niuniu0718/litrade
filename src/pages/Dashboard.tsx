@@ -10,6 +10,7 @@ import PageLoading from '../components/PageLoading';
 import { CHART_TOOLTIP, CHART_AXIS_LABEL, CHART_SPLIT_LINE, CHART_LEGEND, COLORS, gradientArea } from '../utils/chartThemes';
 import { CARD, CARD_BODY, SECTION, GAP, GLASS_HIGHLIGHT, TEXT } from '../utils/styles';
 import type { SignalDirection } from '../types/dashboard';
+import AIAnalysisPanel from '../components/AIAnalysisPanel';
 
 const signalConfig: Record<SignalDirection, { label: string; color: string; tagColor: string; bg: string }> = {
   bullish: { label: '偏多', color: '#10b981', tagColor: '#10b981', bg: 'rgba(16,185,129,0.06)' },
@@ -598,10 +599,12 @@ const MacroDetail: React.FC = () => {
 // ────────────── 主页面 ──────────────
 
 const Dashboard: React.FC = () => {
-  const { priceOverview, indicators, judgment, loading, fetchAll } = useDashboardStore();
+  const { priceOverview, indicators, judgment, loading, fetchAll, todayAnalysis, yesterdayReview, analysisHistory, fetchAnalysis } = useDashboardStore();
   const [activeDimension, setActiveDimension] = useState<DimensionKey>('demand');
 
-  useEffect(() => { fetchAll(); }, []);
+  useEffect(() => {
+    fetchAll().then(() => { fetchAnalysis(); });
+  }, []);
 
   if (loading || !priceOverview || !indicators || !judgment) return <PageLoading />;
 
@@ -651,68 +654,66 @@ const Dashboard: React.FC = () => {
     },
   };
 
-  const isUp = priceOverview.change >= 0;
-
   return (
     <div>
-      {/* ═══ AI 综合分析 ═══ */}
-      <div style={{
-        ...CARD,
-        borderRadius: 16,
-        background: `linear-gradient(135deg, ${overallCfg.color}08 0%, rgba(255,255,255,0.04) 50%, ${overallCfg.color}05 100%)`,
-        border: `1px solid ${overallCfg.color}20`,
-      }}>
-        <div style={GLASS_HIGHLIGHT} />
-        <div style={{ ...CARD_BODY, padding: '24px 28px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-            {/* AI 图标 + 判断 */}
-            <div style={{
-              width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-              background: `linear-gradient(135deg, ${overallCfg.color}20, ${overallCfg.color}08)`,
-              border: `1px solid ${overallCfg.color}30`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 20, color: overallCfg.color,
-              boxShadow: `0 0 20px ${overallCfg.color}15`,
-            }}>
-              AI
-            </div>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: TEXT.secondary, letterSpacing: 0.5 }}>智能研判</span>
-                <Tag style={{
-                  margin: 0, fontSize: 12, fontWeight: 700, padding: '2px 12px', borderRadius: 6,
-                  background: overallCfg.bg, color: overallCfg.tagColor,
-                  textShadow: `0 0 8px ${overallCfg.color}44`,
-                }}>
-                  {overallCfg.label}
-                </Tag>
-                <span style={{ fontSize: 20, fontWeight: 700, color: overallCfg.color, textShadow: `0 0 12px ${overallCfg.color}30` }}>
-                  {judgment.score}
-                </span>
-                <span style={{ fontSize: 11, color: TEXT.secondary }}>/ 100</span>
+      {/* ═══ AI 智能研判面板 ═══ */}
+      {todayAnalysis && analysisHistory ? (
+        <AIAnalysisPanel
+          analysis={todayAnalysis}
+          review={yesterdayReview}
+          history={analysisHistory}
+          currentPrice={priceOverview.currentPrice}
+        />
+      ) : (
+        <div style={{
+          ...CARD, borderRadius: 16,
+          background: `linear-gradient(135deg, ${overallCfg.color}08 0%, rgba(255,255,255,0.04) 50%, ${overallCfg.color}05 100%)`,
+          border: `1px solid ${overallCfg.color}20`,
+        }}>
+          <div style={GLASS_HIGHLIGHT} />
+          <div style={{ ...CARD_BODY, padding: '24px 28px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <div style={{
+                width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                background: `linear-gradient(135deg, ${overallCfg.color}20, ${overallCfg.color}08)`,
+                border: `1px solid ${overallCfg.color}30`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 20, color: overallCfg.color,
+                boxShadow: `0 0 20px ${overallCfg.color}15`,
+              }}>AI</div>
+              <div style={{ flex: 1, minWidth: 200 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: TEXT.secondary, letterSpacing: 0.5 }}>智能研判</span>
+                  <Tag style={{
+                    margin: 0, fontSize: 12, fontWeight: 700, padding: '2px 12px', borderRadius: 6,
+                    background: overallCfg.bg, color: overallCfg.tagColor,
+                  }}>
+                    {overallCfg.label}
+                  </Tag>
+                  <span style={{ fontSize: 20, fontWeight: 700, color: overallCfg.color }}>
+                    {judgment.score}
+                  </span>
+                  <span style={{ fontSize: 11, color: TEXT.secondary }}>/ 100</span>
+                </div>
+                <div style={{ fontSize: 14, color: TEXT.primary, lineHeight: 1.6, fontWeight: 500 }}>
+                  {judgment.summary}
+                </div>
               </div>
-              <div style={{ fontSize: 14, color: TEXT.primary, lineHeight: 1.6, fontWeight: 500 }}>
-                {judgment.summary}
-              </div>
-            </div>
-            {/* 当前价格 */}
-            <div style={{
-              flexShrink: 0, textAlign: 'right',
-              padding: '10px 18px', borderRadius: 10,
-              border: '1px solid rgba(255,255,255,0.06)',
-              background: 'rgba(255,255,255,0.03)',
-            }}>
-              <div style={{ fontSize: 10, color: TEXT.secondary, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>碳酸锂现价</div>
-              <div style={{ fontSize: 26, fontWeight: 700, color: TEXT.primary, lineHeight: 1 }}>
-                {priceOverview.currentPrice.toLocaleString()}
-              </div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: isUp ? '#ef4444' : '#10b981', marginTop: 4 }}>
-                {isUp ? '+' : ''}{priceOverview.change.toLocaleString()} ({isUp ? '+' : ''}{priceOverview.changePercent.toFixed(2)}%)
+              <div style={{
+                flexShrink: 0, textAlign: 'right',
+                padding: '10px 18px', borderRadius: 10,
+                border: '1px solid rgba(255,255,255,0.06)',
+                background: 'rgba(255,255,255,0.03)',
+              }}>
+                <div style={{ fontSize: 10, color: TEXT.secondary, marginBottom: 4 }}>碳酸锂现价</div>
+                <div style={{ fontSize: 26, fontWeight: 700, color: TEXT.primary, lineHeight: 1 }}>
+                  {priceOverview.currentPrice.toLocaleString()}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ═══ 四维指标卡片（切换标签） ═══ */}
       <Row gutter={GAP} style={{ marginTop: GAP }}>
