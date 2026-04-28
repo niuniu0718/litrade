@@ -7,7 +7,6 @@ import ChartDetail from './pages/ChartDetail';
 import PriceManagement from './pages/PriceManagement';
 import SupplyDemand from './pages/SupplyDemand';
 import CompanyAnalysis from './pages/CompanyAnalysis';
-import MarketIntelligence from './pages/MarketIntelligence';
 import CostAnalysis from './pages/CostAnalysis';
 import TradeData from './pages/TradeData';
 import Settings from './pages/Settings';
@@ -49,7 +48,6 @@ function App() {
             <Route path="/company" element={<CompanyAnalysis />} />
             <Route path="/cost" element={<CostAnalysis />} />
             <Route path="/trade" element={<TradeData />} />
-            <Route path="/intelligence" element={<MarketIntelligence />} />
             <Route path="/scenario" element={<ScenarioAnalysis />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

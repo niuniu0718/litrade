@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import type { InventoryOverview, InventoryTrend, InventoryPriceRelation, InventoryCycle } from '../types/inventory';
+import type { InventoryDimension, InventoryTrend, InventoryPriceRelation, InventoryCycle } from '../types/inventory';
 import * as api from '../services/inventoryService';
 
 interface InventoryState {
-  overview: InventoryOverview | null;
+  dimensions: InventoryDimension[];
   trend: InventoryTrend[];
   priceRelation: InventoryPriceRelation[];
   cycle: InventoryCycle | null;
@@ -12,7 +12,7 @@ interface InventoryState {
 }
 
 export const useInventoryStore = create<InventoryState>((set) => ({
-  overview: null,
+  dimensions: [],
   trend: [],
   priceRelation: [],
   cycle: null,
@@ -20,12 +20,12 @@ export const useInventoryStore = create<InventoryState>((set) => ({
 
   fetchAll: async () => {
     set({ loading: true });
-    const [overview, trend, priceRelation, cycle] = await Promise.all([
-      api.fetchInventoryOverview(),
+    const [dimensions, trend, priceRelation, cycle] = await Promise.all([
+      api.fetchInventoryDimensions(),
       api.fetchInventoryTrend(),
       api.fetchInventoryPriceRelation(),
       api.fetchInventoryCycle(),
     ]);
-    set({ overview, trend, priceRelation, cycle, loading: false });
+    set({ dimensions, trend, priceRelation, cycle, loading: false });
   },
 }));

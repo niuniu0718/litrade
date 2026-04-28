@@ -3,8 +3,12 @@ import {
   generateMacroIndicators,
   generateMacroPriceCorrelation,
   generateMacroCalendar,
+  generateMarketReports,
+  generateCapitalFlows,
+  generateQualitativeIndicators,
+  generateMarketSentiment,
 } from '../data/mockMacro';
-import type { MacroRadarData, MacroIndicator, MacroPriceCorrelation, MacroCalendarEvent } from '../types/macro';
+import type { MacroRadarData, MacroIndicator, MacroPriceCorrelation, MacroCalendarEvent, MarketReport, CapitalFlow, QualitativeIndicator, MarketSentiment } from '../types/macro';
 
 export async function fetchMacroRadar(): Promise<MacroRadarData[]> {
   return generateMacroRadar();
@@ -20,4 +24,22 @@ export async function fetchMacroPriceCorrelation(): Promise<MacroPriceCorrelatio
 
 export async function fetchMacroCalendar(): Promise<MacroCalendarEvent[]> {
   return generateMacroCalendar();
+}
+
+// ─── 以下函数原属 apiIntelligence.ts ───
+
+export async function fetchMarketReports(): Promise<MarketReport[]> {
+  return generateMarketReports();
+}
+
+export async function fetchCapitalFlows(): Promise<CapitalFlow[]> {
+  return generateCapitalFlows();
+}
+
+export async function fetchQualitativeIndicators(): Promise<QualitativeIndicator[]> {
+  return generateQualitativeIndicators();
+}
+
+export async function fetchMarketSentiment(): Promise<MarketSentiment> {
+  return generateMarketSentiment();
 }

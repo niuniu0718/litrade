@@ -6,9 +6,17 @@ export interface MiningProject {
   mineralType: string;
   reserve: number;          // 万吨 LCE
   capacity: number;         // 万吨 LCE/年
-  actualOutput: number;     // 实际产量 万吨
-  cost: number;             // 成本 美元/吨
+  capacityYear: number;     // 产能数据对应年份
   operator: string;
+}
+
+export interface ProjectProduction {
+  projectId: string;
+  projectName: string;
+  year: number;
+  output: number;           // 产量 万吨
+  source: string;           // 数据来源
+  isForecast: boolean;
 }
 
 export interface SupplySummary {
@@ -32,8 +40,9 @@ export interface InternalDemand {
 }
 
 export interface SupplyDemandBalance {
-  month: string;
+  year: string;
   supply: number;
   demand: number;
   surplus: number;          // 盈余/缺口
+  isForecast: boolean;
 }

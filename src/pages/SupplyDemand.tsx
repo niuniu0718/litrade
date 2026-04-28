@@ -29,21 +29,55 @@ const SupplyDemand: React.FC = () => {
     series: [{ type: 'bar', data: demandSectors.map((d, i) => ({ value: d.growth, itemStyle: { color: d.growth >= 0 ? COLORS[i % COLORS.length] : '#ef4444' } })), barWidth: '40%' }],
   }), [demandSectors]);
 
-  const balanceOption = useMemo(() => ({
-    tooltip: CHART_TOOLTIP,
-    legend: { ...CHART_LEGEND, data: ['供给', '需求', '盈余/缺口'] },
-    grid: { top: 40, right: 60, bottom: 30, left: 50 },
-    xAxis: { type: 'category', data: balance.map((b) => b.month), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
-    yAxis: [
-      { type: 'value', name: 'LCE万吨', nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
-      { type: 'value', name: '盈余/缺口', position: 'right' as const, nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
-    ],
-    series: [
-      { name: '供给', type: 'bar', data: balance.map((b) => b.supply), itemStyle: { color: '#0064ff' }, barWidth: '20%' },
-      { name: '需求', type: 'bar', data: balance.map((b) => b.demand), itemStyle: { color: '#f59e0b' }, barWidth: '20%' },
-      { name: '盈余/缺口', type: 'line', yAxisIndex: 1, data: balance.map((b) => b.surplus), smooth: true, symbol: 'circle', symbolSize: 6, lineStyle: { color: '#10b981', width: 2 }, itemStyle: { color: '#10b981' } },
-    ],
-  }), [balance]);
+  const balanceOption = useMemo(() => {
+    const forecastStart = balance.findIndex((b) => b.isForecast);
+    const forecastX = forecastStart >= 0 ? forecastStart - 0.5 : undefined;
+    return {
+      tooltip: CHART_TOOLTIP,
+      legend: { ...CHART_LEGEND, data: ['供给', '需求', '盈余/缺口'] },
+      grid: { top: 40, right: 60, bottom: 30, left: 50 },
+      xAxis: { type: 'category', data: balance.map((b) => b.year), axisLine: { lineStyle: { color: '#e5e7eb' } }, axisTick: { show: false }, axisLabel: { ...CHART_AXIS_LABEL, rotate: 30 } },
+      yAxis: [
+        { type: 'value', name: 'LCE万吨', nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: CHART_SPLIT_LINE, axisLine: { show: false }, axisTick: { show: false } },
+        { type: 'value', name: '盈余/缺口', position: 'right' as const, nameTextStyle: { color: '#9ca3af', fontSize: 11 }, axisLabel: CHART_AXIS_LABEL, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+      ],
+      series: [
+        {
+          name: '供给', type: 'bar',
+          data: balance.map((b) => ({
+            value: b.supply,
+            itemStyle: b.isForecast
+              ? { color: 'rgba(0,100,255,0.3)', borderColor: '#0064ff', borderWidth: 1, borderType: 'dashed' as const }
+              : { color: '#0064ff' },
+          })),
+          barWidth: '20%',
+        },
+        {
+          name: '需求', type: 'bar',
+          data: balance.map((b) => ({
+            value: b.demand,
+            itemStyle: b.isForecast
+              ? { color: 'rgba(245,158,11,0.3)', borderColor: '#f59e0b', borderWidth: 1, borderType: 'dashed' as const }
+              : { color: '#f59e0b' },
+          })),
+          barWidth: '20%',
+        },
+        {
+          name: '盈余/缺口', type: 'line', yAxisIndex: 1,
+          data: balance.map((b) => b.surplus),
+          smooth: true, symbol: 'circle', symbolSize: 6,
+          lineStyle: { color: '#10b981', width: 2 },
+          itemStyle: { color: '#10b981' },
+          markLine: forecastX != null ? {
+            silent: true, symbol: 'none',
+            lineStyle: { color: 'rgba(0,0,0,0.15)', type: 'dashed' as const },
+            data: [{ xAxis: forecastX }],
+            label: { formatter: '预测', fontSize: 10, color: '#8c8c8c' },
+          } : undefined,
+        },
+      ],
+    };
+  }, [balance]);
 
   // 产能利用率柱状图
   const utilizationOption = useMemo(() => {
@@ -147,9 +181,10 @@ const SupplyDemand: React.FC = () => {
     },
     { title: '矿种', dataIndex: 'mineralType', key: 'mineralType', width: 90 },
     { title: '储量(万吨LCE)', dataIndex: 'reserve', key: 'reserve', width: 110, render: (v: number) => v.toLocaleString() },
-    { title: '产能(万吨/年)', dataIndex: 'capacity', key: 'capacity', width: 110, render: (v: number) => v.toLocaleString() },
-    { title: '实际产量', dataIndex: 'actualOutput', key: 'actualOutput', width: 100, render: (v: number) => v.toLocaleString() },
-    { title: '成本($/t)', dataIndex: 'cost', key: 'cost', width: 100, render: (v: number) => `$${v.toLocaleString()}` },
+    {
+      title: '产能(万吨/年)', dataIndex: 'capacity', key: 'capacity', width: 130,
+      render: (_: number, record: typeof projects[0]) => `${record.capacity} (${record.capacityYear})`,
+    },
     { title: '运营方', dataIndex: 'operator', key: 'operator', width: 130 },
   ];
 

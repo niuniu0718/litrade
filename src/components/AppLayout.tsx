@@ -10,7 +10,6 @@ import {
   TeamOutlined,
   FundOutlined,
   GlobalOutlined,
-  BulbOutlined,
   SettingOutlined,
   ShoppingOutlined,
   ContainerOutlined,
@@ -59,7 +58,6 @@ const menuItems: MenuItem[] = [
     label: '情报中心',
     type: 'group',
     children: [
-      { key: '/intelligence', icon: <BulbOutlined />, label: '市场情报' },
       { key: '/scenario', icon: <ThunderboltOutlined />, label: '情境模拟' },
     ],
   },
@@ -77,7 +75,7 @@ const menuItems: MenuItem[] = [
 const allKeys = [
   '/dashboard', '/demand', '/supply-demand', '/inventory', '/macro',
   '/price', '/chart', '/company', '/cost', '/trade',
-  '/intelligence', '/scenario', '/settings',
+  '/scenario', '/settings',
 ];
 
 const AppLayout: React.FC = () => {

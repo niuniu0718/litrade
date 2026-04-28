@@ -1,25 +1,22 @@
 // 库存分析相关类型
 
-/** 库存概览 */
-export interface InventoryOverview {
-  li2co3: InventoryItem;    // 碳酸锂库存
-  lioh: InventoryItem;      // 氢氧化锂库存
-}
-
-/** 单品种库存数据 */
-export interface InventoryItem {
-  product: string;          // 品种名称
-  currentStock: number;     // 当前库存量 吨
-  momChange: number;        // 环比变化%
-  stockConsumptionRatio: number; // 库存消费比
+/** 库存维度数据（工厂/市场/期货/行业总库存） */
+export interface InventoryDimension {
+  key: string;               // 维度标识 factory | market | futures | total
+  label: string;             // 维度中文名
+  currentStock: number;      // 当前库存量 吨
+  momChange: number;         // 环比变化%
+  wowChange: number;         // 周环比变化%
 }
 
 /** 库存趋势数据 */
 export interface InventoryTrend {
   month: string;
-  li2co3Stock: number;      // 碳酸锂库存 吨
-  liohStock: number;        // 氢氧化锂库存 吨
-  changeRate: number;       // 库存增减率%
+  factory: number;           // 工厂库存 吨
+  market: number;            // 市场库存 吨
+  futures: number;           // 期货库存 吨
+  total: number;             // 行业总库存 吨
+  changeRate: number;        // 库存增减率%
 }
 
 /** 库存-价格关系 */

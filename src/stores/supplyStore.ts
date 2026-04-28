@@ -1,9 +1,10 @@
 import { create } from 'zustand';
-import type { MiningProject, SupplySummary, DemandSector, InternalDemand, SupplyDemandBalance } from '../types/supply';
+import type { MiningProject, ProjectProduction, SupplySummary, DemandSector, InternalDemand, SupplyDemandBalance } from '../types/supply';
 import * as api from '../services/apiSupply';
 
 interface SupplyState {
   projects: MiningProject[];
+  projectProduction: ProjectProduction[];
   summary: SupplySummary | null;
   demandSectors: DemandSector[];
   internalDemand: InternalDemand[];
@@ -14,6 +15,7 @@ interface SupplyState {
 
 export const useSupplyStore = create<SupplyState>((set) => ({
   projects: [],
+  projectProduction: [],
   summary: null,
   demandSectors: [],
   internalDemand: [],
@@ -22,13 +24,14 @@ export const useSupplyStore = create<SupplyState>((set) => ({
 
   fetchAll: async () => {
     set({ loading: true });
-    const [projects, summary, demandSectors, internalDemand, balance] = await Promise.all([
+    const [projects, projectProduction, summary, demandSectors, internalDemand, balance] = await Promise.all([
       api.fetchMiningProjects(),
+      api.fetchProjectProduction(),
       api.fetchSupplySummary(),
       api.fetchDemandSectors(),
       api.fetchInternalDemand(),
       api.fetchSupplyDemandBalance(),
     ]);
-    set({ projects, summary, demandSectors, internalDemand, balance, loading: false });
+    set({ projects, projectProduction, summary, demandSectors, internalDemand, balance, loading: false });
   },
 }));

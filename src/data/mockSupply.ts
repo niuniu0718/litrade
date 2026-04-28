@@ -1,5 +1,6 @@
 import type {
   MiningProject,
+  ProjectProduction,
   SupplySummary,
   DemandSector,
   InternalDemand,
@@ -12,23 +13,91 @@ function randomBetween(min: number, max: number): number {
 
 export function generateMiningProjects(): MiningProject[] {
   const projects: Omit<MiningProject, 'id'>[] = [
-    { name: 'Greenbushes', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 890, capacity: 16, actualOutput: 14.5, cost: 350, operator: 'Talison' },
-    { name: 'Mt Cattlin', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 120, capacity: 2.3, actualOutput: 2.1, cost: 520, operator: 'Allkem' },
-    { name: 'Mt Marion', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 210, capacity: 4.5, actualOutput: 4.0, cost: 480, operator: 'Mineral Resources' },
-    { name: 'Pilgangoora', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 520, capacity: 6.5, actualOutput: 5.8, cost: 450, operator: 'Pilbara Minerals' },
-    { name: 'Wodgina', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 310, capacity: 7.5, actualOutput: 4.5, cost: 490, operator: 'Mineral Resources' },
-    { name: 'Salar de Atacama', country: '智利', status: 'producing', mineralType: '盐湖卤水', reserve: 1200, capacity: 22, actualOutput: 20, cost: 280, operator: 'SQM' },
-    { name: 'Salar de Atacama (Albemarle)', country: '智利', status: 'producing', mineralType: '盐湖卤水', reserve: 900, capacity: 18, actualOutput: 16, cost: 300, operator: 'Albemarle' },
-    { name: 'Salar de Olaroz', country: '阿根廷', status: 'producing', mineralType: '盐湖卤水', reserve: 420, capacity: 2.5, actualOutput: 2.2, cost: 380, operator: 'Allkem' },
-    { name: 'Cauchari-Olaroz', country: '阿根廷', status: 'producing', mineralType: '盐湖卤水', reserve: 680, capacity: 4, actualOutput: 3.5, cost: 360, operator: 'Lithium Americas' },
-    { name: 'Manono', country: '刚果(金)', status: 'exploration', mineralType: '锂辉石', reserve: 750, capacity: 5, actualOutput: 0, cost: 420, operator: 'AVZ Minerals' },
-    { name: '宜春云母提锂', country: '中国', status: 'producing', mineralType: '锂云母', reserve: 580, capacity: 8, actualOutput: 6.5, cost: 550, operator: '多家企业' },
-    { name: '察尔汗盐湖', country: '中国', status: 'producing', mineralType: '盐湖卤水', reserve: 450, capacity: 4, actualOutput: 3.8, cost: 320, operator: '盐湖股份' },
-    { name: 'Thacker Pass', country: '美国', status: 'construction', mineralType: '锂黏土', reserve: 960, capacity: 6, actualOutput: 0, cost: 450, operator: 'Lithium Americas' },
-    { name: 'Kathu Valley', country: '南非', status: 'exploration', mineralType: '锂辉石', reserve: 180, capacity: 2, actualOutput: 0, cost: 500, operator: 'Marula Mining' },
+    { name: 'Greenbushes', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 890, capacity: 16, capacityYear: 2024, operator: 'Talison' },
+    { name: 'Mt Cattlin', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 120, capacity: 2.3, capacityYear: 2024, operator: 'Allkem' },
+    { name: 'Mt Marion', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 210, capacity: 4.5, capacityYear: 2024, operator: 'Mineral Resources' },
+    { name: 'Pilgangoora', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 520, capacity: 6.5, capacityYear: 2024, operator: 'Pilbara Minerals' },
+    { name: 'Wodgina', country: '澳大利亚', status: 'producing', mineralType: '锂辉石', reserve: 310, capacity: 7.5, capacityYear: 2024, operator: 'Mineral Resources' },
+    { name: 'Salar de Atacama', country: '智利', status: 'producing', mineralType: '盐湖卤水', reserve: 1200, capacity: 22, capacityYear: 2024, operator: 'SQM' },
+    { name: 'Salar de Atacama (Albemarle)', country: '智利', status: 'producing', mineralType: '盐湖卤水', reserve: 900, capacity: 18, capacityYear: 2024, operator: 'Albemarle' },
+    { name: 'Salar de Olaroz', country: '阿根廷', status: 'producing', mineralType: '盐湖卤水', reserve: 420, capacity: 2.5, capacityYear: 2024, operator: 'Allkem' },
+    { name: 'Cauchari-Olaroz', country: '阿根廷', status: 'producing', mineralType: '盐湖卤水', reserve: 680, capacity: 4, capacityYear: 2024, operator: 'Lithium Americas' },
+    { name: 'Manono', country: '刚果(金)', status: 'exploration', mineralType: '锂辉石', reserve: 750, capacity: 5, capacityYear: 2026, operator: 'AVZ Minerals' },
+    { name: '宜春云母提锂', country: '中国', status: 'producing', mineralType: '锂云母', reserve: 580, capacity: 8, capacityYear: 2024, operator: '多家企业' },
+    { name: '察尔汗盐湖', country: '中国', status: 'producing', mineralType: '盐湖卤水', reserve: 450, capacity: 4, capacityYear: 2024, operator: '盐湖股份' },
+    { name: 'Thacker Pass', country: '美国', status: 'construction', mineralType: '锂黏土', reserve: 960, capacity: 6, capacityYear: 2026, operator: 'Lithium Americas' },
+    { name: 'Kathu Valley', country: '南非', status: 'exploration', mineralType: '锂辉石', reserve: 180, capacity: 2, capacityYear: 2027, operator: 'Marula Mining' },
   ];
 
   return projects.map((p, i) => ({ ...p, id: `project-${i}` }));
+}
+
+export function generateProjectProduction(): ProjectProduction[] {
+  const projects = generateMiningProjects();
+  const histSources = ['USGS', 'BNEF', '公司年报', 'SQM季报', 'Albemarle年报', 'Fastmarkets', 'SMM', 'CRU', '行业协会'];
+  const foreSources = ['BNEF预测', 'CRU预测', 'Fastmarkets预测', '公司指引'];
+  const result: ProjectProduction[] = [];
+
+  for (const project of projects) {
+    if (project.status === 'producing') {
+      // Historical: 2022-2024
+      const baseOutput = project.capacity * 0.85;
+      for (const year of [2022, 2023, 2024]) {
+        const noise = randomBetween(-0.5, 0.5);
+        const growth = (year - 2022) * randomBetween(0.3, 0.8);
+        result.push({
+          projectId: project.id,
+          projectName: project.name,
+          year,
+          output: Math.round((baseOutput * (0.8 + growth * 0.1) + noise) * 10) / 10,
+          source: year === 2024 ? '公司年报/SMM' : histSources[Math.floor(Math.random() * histSources.length)],
+          isForecast: false,
+        });
+      }
+      // Fix 2024 to capacity-based
+      const entry2024 = result.find((r) => r.projectId === project.id && r.year === 2024);
+      if (entry2024) {
+        entry2024.output = Math.round(project.capacity * randomBetween(0.75, 0.95) * 10) / 10;
+      }
+      // Forecast: 2025-2030
+      let prevOutput = entry2024!.output;
+      for (const year of [2025, 2026, 2027, 2028, 2029, 2030]) {
+        const rampFactor = year <= project.capacityYear + 2
+          ? randomBetween(1.02, 1.10)
+          : randomBetween(0.98, 1.05);
+        const output = Math.round(Math.min(prevOutput * rampFactor, project.capacity * 1.05) * 10) / 10;
+        result.push({
+          projectId: project.id,
+          projectName: project.name,
+          year,
+          output,
+          source: foreSources[Math.floor(Math.random() * foreSources.length)],
+          isForecast: true,
+        });
+        prevOutput = output;
+      }
+    } else {
+      // Non-producing: forecast from capacityYear onward
+      const startYear = Math.max(project.capacityYear, 2025);
+      let prevOutput = project.capacity * 0.3;
+      for (const year of [2025, 2026, 2027, 2028, 2029, 2030]) {
+        if (year < startYear) continue;
+        const ramp = year === startYear ? 0.4 : randomBetween(0.9, 1.1);
+        const output = Math.round(Math.min(prevOutput * ramp, project.capacity * 0.95) * 10) / 10;
+        result.push({
+          projectId: project.id,
+          projectName: project.name,
+          year,
+          output,
+          source: foreSources[Math.floor(Math.random() * foreSources.length)],
+          isForecast: true,
+        });
+        prevOutput = output;
+      }
+    }
+  }
+
+  return result;
 }
 
 export function generateSupplySummary(): SupplySummary {
@@ -66,21 +135,25 @@ export function generateInternalDemand(): InternalDemand[] {
 }
 
 export function generateSupplyDemandBalance(): SupplyDemandBalance[] {
-  const months = [];
-  let supply = 8.2;
-  let demand = 8.0;
-  for (let i = 11; i >= 0; i--) {
-    const date = new Date();
-    date.setMonth(date.getMonth() - i);
-    const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    supply = Math.round((supply + randomBetween(-0.3, 0.5)) * 10) / 10;
-    demand = Math.round((demand + randomBetween(-0.1, 0.6)) * 10) / 10;
-    months.push({
-      month: label,
-      supply,
-      demand,
-      surplus: Math.round((supply - demand) * 10) / 10,
-    });
-  }
-  return months;
+  const years = [
+    { year: '2019', supply: 38.5, demand: 36.0, isForecast: false },
+    { year: '2020', supply: 42.0, demand: 40.5, isForecast: false },
+    { year: '2021', supply: 54.0, demand: 52.0, isForecast: false },
+    { year: '2022', supply: 78.5, demand: 72.0, isForecast: false },
+    { year: '2023', supply: 96.0, demand: 88.5, isForecast: false },
+    { year: '2024', supply: 105.8, demand: 105.2, isForecast: false },
+    { year: '2025E', supply: 118.0, demand: 120.0, isForecast: true },
+    { year: '2026E', supply: 132.0, demand: 138.0, isForecast: true },
+    { year: '2027E', supply: 148.0, demand: 155.0, isForecast: true },
+    { year: '2028E', supply: 162.0, demand: 172.0, isForecast: true },
+    { year: '2029E', supply: 175.0, demand: 190.0, isForecast: true },
+    { year: '2030E', supply: 190.0, demand: 210.0, isForecast: true },
+  ];
+  return years.map((y) => ({
+    year: y.year,
+    supply: y.supply,
+    demand: y.demand,
+    surplus: Math.round((y.supply - y.demand) * 10) / 10,
+    isForecast: y.isForecast,
+  }));
 }

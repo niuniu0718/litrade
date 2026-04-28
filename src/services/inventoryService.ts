@@ -1,13 +1,13 @@
 import {
-  generateInventoryOverview,
+  generateInventoryDimensions,
   generateInventoryTrend,
   generateInventoryPriceRelation,
   generateInventoryCycle,
 } from '../data/mockInventory';
-import type { InventoryOverview, InventoryTrend, InventoryPriceRelation, InventoryCycle } from '../types/inventory';
+import type { InventoryDimension, InventoryTrend, InventoryPriceRelation, InventoryCycle } from '../types/inventory';
 
-export async function fetchInventoryOverview(): Promise<InventoryOverview> {
-  return generateInventoryOverview();
+export async function fetchInventoryDimensions(): Promise<InventoryDimension[]> {
+  return generateInventoryDimensions();
 }
 
 export async function fetchInventoryTrend(): Promise<InventoryTrend[]> {

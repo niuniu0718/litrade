@@ -35,3 +35,43 @@ export interface MacroCalendarEvent {
   forecast: string;         // 预期
   impact: string;           // 影响说明
 }
+
+// ─── 以下类型原属 intelligence.ts ───
+
+/** 研究报告 */
+export interface MarketReport {
+  id: string;
+  title: string;
+  source: string;
+  date: string;
+  summary: string;
+  importance: 'high' | 'medium' | 'low';
+  category: string;
+}
+
+/** 板块资金流向 */
+export interface CapitalFlow {
+  sector: string;
+  netInflow: number;        // 亿元
+  change: number;           // 变化%
+  topStocks: { name: string; code: string; change: number }[];
+}
+
+/** 定性宏观指标（原 intelligence 的 MacroIndicator） */
+export interface QualitativeIndicator {
+  name: string;
+  category: 'politics' | 'geopolitics' | 'currency' | 'trade';
+  value: string;
+  trend: 'positive' | 'negative' | 'neutral';
+  impact: 'high' | 'medium' | 'low';
+  description: string;
+}
+
+/** 市场情绪 */
+export interface MarketSentiment {
+  heatIndex: number;        // 0-100
+  bullBearRatio: number;    // 多空比
+  hotWords: string[];
+  newsCount24h: number;
+  sentimentScore: number;   // -100 to 100
+}

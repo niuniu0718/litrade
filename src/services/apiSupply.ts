@@ -1,14 +1,19 @@
 import {
   generateMiningProjects,
+  generateProjectProduction,
   generateSupplySummary,
   generateDemandSectors,
   generateInternalDemand,
   generateSupplyDemandBalance,
 } from '../data/mockSupply';
-import type { MiningProject, SupplySummary, DemandSector, InternalDemand, SupplyDemandBalance } from '../types/supply';
+import type { MiningProject, ProjectProduction, SupplySummary, DemandSector, InternalDemand, SupplyDemandBalance } from '../types/supply';
 
 export async function fetchMiningProjects(): Promise<MiningProject[]> {
   return generateMiningProjects();
+}
+
+export async function fetchProjectProduction(): Promise<ProjectProduction[]> {
+  return generateProjectProduction();
 }
 
 export async function fetchSupplySummary(): Promise<SupplySummary> {
